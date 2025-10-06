@@ -1,0 +1,95 @@
+{
+     "nav": {
+    "home": "الرئيسية",
+    "about": "عن سيفرا",
+    "clients": "العملاء",
+    "projects": "المشاريع",
+    "services": "الخدمات",
+    "contact": "اتصل بنا"
+  },
+  "hero": {
+    "title1": "تكنولوجيا ذكية",
+    "title2": "حلول بسيطة"
+  },
+  "stats": {
+    "satisfiedClients": "عملاء راضون",
+    "startupsSolutions": "حلول للشركات الناشئة",
+    "b2bProjects": "مشاريع B2B",
+    "creativeServices": "خدمات إبداعية"
+  },
+  "siderbarTypes": {
+    "eLearning": "التعلم الإلكتروني",
+    "eCommerce": "التجارة الإلكترونية",
+    "saas": "البرمجيات كخدمة",
+    "erp": "نظام ERP",
+    "crm": "نظام CRM",
+    "healthcare": "الرعاية الصحية",
+    "crossPlatform": "عبر المنصات",
+    "androidMobile": "تطبيق أندرويد",
+    "others": "أخرى"
+  },
+  "footer": {
+    "title": "سيفرا",
+    "contact": "اتصل بنا",
+    "rights": "جميع الحقوق محفوظة."
+  },
+  "whoweare":{
+    "who":"من نحن؟"
+  },
+   "textPreview": {
+    "title": "نحن شركة حلول رقمية",
+    "description": "البناء هو مصطلح عام يعني فن وعلم تشكيل الأشياء أو الأنظمة أو المنظمات، ويعود أصله إلى اللاتينية constructio والفرنسية القديمة construction.",
+    "button": "اقرأ المزيد"
+  },
+  "projectSection": {
+    "title2": "مشاريعنا",
+    "title3": "ألق نظرة على مشاريعنا وحلولنا المبتكرة"
+  },
+  "serviceSection": {
+    "title2": "خدماتنا",
+    "title3": "نحن نقدم حلول تكنولوجيا المعلومات المثالية لعملك"
+  },
+  "services": {
+    "softwareDevelopment": {
+      "title": "تطوير البرمجيات",
+      "description": "نقوم بتخصيص حزم الإنتاجية المكتبية، برامج إدارة البيانات، مشغلات الوسائط وبرامج الأمان.",
+      "details": {
+        "webdev":"تطوير الويب",
+        "mobileApp": "تطوير تطبيقات الهواتف",
+        "desktop": "تطوير تطبيقات سطح المكتب",
+        "payment": "دمج أنظمة الدفع"
+
+      }
+    },
+    "ITMaintenance": {
+      "title": "الصيانة التقنية",
+      "description": "ندعم المهام اليومية لشركتك ونحافظ على أمان بياناتك وبيانات عملائك.",
+      "details": {
+        "monitoring": "مراقبة على مدار الساعة",
+        "securityPatches": "تحديثات الأمان",
+        "backupSolutions": "حلول النسخ الاحتياطي"
+      }
+    },
+    "networkIntegration": {
+      "title": "تكامل الشبكات",
+      "description": "عملية دمج شبكات الحاسوب المختلفة أو مكوناتها لتشكيل شبكة أكبر وأكثر كفاءة.",
+      "details": {
+        "LANWANSetup": "إعداد LAN/WAN",
+        "firewallConfiguration": "تكوين جدار الحماية",
+        "cloudConnectivity": "الاتصال بالسحابة"
+      }
+    }
+  },
+  "contactForm": {
+    "title": "تواصل معنا",
+    "chooseService": "اختر الخدمة",
+    "company": "الشركة*",
+    "email": "البريد الإلكتروني*",
+    "phone": "رقم الهاتف*",
+    "message": "اكتب رسالتك هنا...",
+    "send": "إرسال"
+  },
+  "easyContact":{
+    "title":"تواصل بسرعة"
+  }
+}

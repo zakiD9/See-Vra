@@ -1,0 +1,50 @@
+import React, { lazy, Suspense } from "react";
+import Footer from "@/components/layout/user/footer";
+import NavBar from "@/components/layout/user/header/NavBar";
+import { ReusableTabs } from "@/components/pages/project/projecttabs/tabsSection";
+
+const ProjectDetails = lazy(() => import("@/components/pages/project/ProjectDetails"));
+const ProjectPics = lazy(() => import("@/components/pages/project/ProjectPics"));
+const OfferndUsed = lazy(() => import("@/components/pages/project/OfferndUsed"));
+const About = lazy(() => import("@/components/pages/project/projecttabs/about"));
+
+
+
+export default function ProjectPage(){
+  const tabs = [
+    {
+      id: "about",
+      label: "About",
+      content: (
+        <About />
+      ),
+    },
+    {
+      id: "feature",
+      label: "Feature",
+      content: <p>Feature details go here...</p>,
+    },
+    {
+      id: "stack",
+      label: "Stack",
+      content: <p>Tech stack information here...</p>,
+    },
+  ]
+
+    return(
+        <div className="bg-background flex flex-col items-center w-full gap-10">
+            <NavBar />
+            <main className="flex flex-col gap-10">
+            <div className="container mx-auto px-4 flex flex-col gap-10">
+            <Suspense fallback={<div>Loading project...</div>}>
+            <ProjectDetails />
+            <ReusableTabs tabs={tabs} />
+            <ProjectPics />
+            <OfferndUsed />
+            </Suspense>
+            </div>
+            </main>
+            <Footer />
+        </div>
+    )
+}

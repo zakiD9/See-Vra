@@ -1,0 +1,96 @@
+{
+"nav": {
+    "home": "Home",
+    "about": "About Seevra",
+    "clients": "Clients",
+    "projects": "Projects",
+    "services": "Services",
+    "contact": "Contact Us"
+  },
+  "hero": {
+    "title1": "Smart IT.",
+    "title2": "Simple Solutions."
+  },
+  "stats": {
+    "satisfiedClients": "Satisfied Clients",
+    "startupsSolutions": "Startups Solutions",
+    "b2bProjects": "B2B Projects",
+    "creativeServices": "Creative Services"
+  },
+  "siderbarTypes": {
+    "eLearning": "E-learning",
+    "eCommerce": "E-commerce",
+    "saas": "SaaS",
+    "erp": "ERP",
+    "crm": "CRM",
+    "healthcare": "HealthCare",
+    "crossPlatform": "Cross Platform",
+    "androidMobile": "Android Mobile",
+    "others": "Others"
+},
+"footer": {
+    "title": "See-vra",
+    "contact": "Contact",
+    "rights": "All Rights Reserved."
+  },
+  "whoweare":{
+    "who":"Who We Are?"
+  },
+   "textPreview": {
+    "title": "We are digital solutions company",
+    "description": " Construction is a general term meaning the art and science to form objects, systems, or organizations, and comes from Latin constructio and Old French construction.",
+    "button": "Read More"
+  },
+  "projectSection": {
+    "title1": "our",
+    "title2": "Projects",
+    "title3": "Check Our Projects & Solutions"
+  },
+  "serviceSection": {
+    "title1":"Our",
+    "title2": "Services",
+    "title3": "We Provide Perfect IT Solutions for Your Business"
+  },
+  "services": {
+    "softwareDevelopment": {
+      "title": "Software Development",
+      "description": "We customize Office productivity suites, data management software, media players and security programs.",
+      "details": {
+        "webdev": "Web Development",
+        "mobileApp": "Mobile Applications Development",
+        "desktop": "Desktop Applications Development",
+        "payment": "Payment Integration"
+      }
+    },
+    "ITMaintenance": {
+      "title": "IT Maintenance",
+      "description": "Supports your business's daily tasks, keeps your and your customers' data safe.",
+      "details": {
+        "monitoring": "24/7 Monitoring",
+        "securityPatches": "Security Patches",
+        "backupSolutions": "Backup Solutions"
+      }
+    },
+    "networkIntegration": {
+      "title": "Network Integration",
+      "description": "Process of combining different computer networks or network components to form a larger, more functional network.",
+      "details": {
+        "LANWANSetup": "LAN/WAN Setup",
+        "firewallConfiguration": "Firewall Configuration",
+        "cloudConnectivity": "Cloud Connectivity"
+      }
+    }
+  },
+  "contactForm": {
+    "title": "Get in Touch With Us",
+    "chooseService": "Choose Service",
+    "company": "Company*",
+    "email": "Email*",
+    "phone": "Phone Number*",
+    "message": "Type your message here...",
+    "send": "Send"
+  },
+  "easyContact":{
+    "title":"Easy Contact"
+  }
+}

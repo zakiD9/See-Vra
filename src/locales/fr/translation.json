@@ -1,0 +1,96 @@
+{
+  "nav": {
+    "home": "Accueil",
+    "about": "À propos de Seevra",
+    "clients": "Clients",
+    "projects": "Projets",
+    "services": "Services",
+    "contact": "Contactez-nous"
+  },
+  "hero": {
+    "title1": "Informatique intelligente",
+    "title2": "Solutions simples"
+  },
+  "stats": {
+    "satisfiedClients": "Clients satisfaits",
+    "startupsSolutions": "Solutions pour startups",
+    "b2bProjects": "Projets B2B",
+    "creativeServices": "Services créatifs"
+  },
+  "siderbarTypes": {
+    "eLearning": "E-learning",
+    "eCommerce": "E-commerce",
+    "saas": "SaaS",
+    "erp": "ERP",
+    "crm": "CRM",
+    "healthcare": "Santé",
+    "crossPlatform": "Plateforme croisée",
+    "androidMobile": "Mobile Android",
+    "others": "Autres"
+  },
+  "footer": {
+    "title": "See-vra",
+    "contact": "Contact",
+    "rights": "Tous droits réservés."
+  },
+  "whoweare":{
+    "who":"Qui Nous Sommes?"
+  },
+  "textPreview": {
+    "title": "Nous sommes une société de solutions numériques",
+    "description": "La construction est un terme général qui signifie l'art et la science de former des objets, des systèmes ou des organisations, et provient du latin constructio et de l'ancien français construction.",
+    "button": "Lire plus"
+  },
+  "projectSection": {
+    "title1":"Nos",
+    "title2": "Projets",
+    "title3": "Consultez nos projets et solutions"
+  },
+  "serviceSection": {
+    "title1":"Nos",
+    "title2": "Services",
+    "title3": "Nous fournissons des solutions informatiques parfaites pour votre entreprise"
+  },
+  "services": {
+    "softwareDevelopment": {
+      "title": "Développement logiciel",
+      "description": "Nous personnalisons les suites bureautiques, les logiciels de gestion de données, les lecteurs multimédias et les programmes de sécurité.",
+      "details": {
+        "webdev": "Développement Web",
+        "mobileApp": "Développement d'applications mobiles",
+        "desktop": "Développement d'applications de bureau",
+        "payment": "Intégration de paiement"
+      }
+    },
+    "ITMaintenance": {
+      "title": "Maintenance informatique",
+      "description": "Soutient les tâches quotidiennes de votre entreprise et protège vos données ainsi que celles de vos clients.",
+      "details": {
+        "monitoring": "Surveillance 24h/24 et 7j/7",
+        "securityPatches": "Correctifs de sécurité",
+        "backupSolutions": "Solutions de sauvegarde"
+      }
+    },
+    "networkIntegration": {
+      "title": "Intégration réseau",
+      "description": "Processus consistant à combiner différents réseaux informatiques ou composants réseau pour former un réseau plus grand et plus fonctionnel.",
+      "details": {
+        "LANWANSetup": "Configuration LAN/WAN",
+        "firewallConfiguration": "Configuration du pare-feu",
+        "cloudConnectivity": "Connectivité cloud"
+      }
+    }
+  },
+  "contactForm": {
+    "title": "Contactez-nous",
+    "chooseService": "Choisir un service",
+    "company": "Entreprise*",
+    "email": "E-mail*",
+    "phone": "Numéro de téléphone*",
+    "message": "Écrivez votre message ici...",
+    "send": "Envoyer"
+  },
+  "easyContact":{
+    "title":"Contact Rapide"
+  }
+}

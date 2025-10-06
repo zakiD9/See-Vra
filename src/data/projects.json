@@ -1,0 +1,15 @@
+
+[
+  {
+    "id": 1,
+    "name": "AI Dashboard",
+    "image": "/images/ai-dashboard",
+    "description": "A smart dashboard with AI-driven insights."
+  },
+  {
+    "id": 2,
+    "name": "E-commerce Store",
+    "image": "/images/store.png",
+    "description": "An online store with modern UI and fast checkout."
+  }
+]
