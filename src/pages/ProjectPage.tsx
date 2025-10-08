@@ -1,7 +1,9 @@
-import React, { lazy, Suspense } from "react";
+import React, { lazy, Suspense, useState } from "react";
 import Footer from "@/components/layout/user/footer";
 import NavBar from "@/components/layout/user/header/NavBar";
 import { ReusableTabs } from "@/components/pages/project/projecttabs/tabsSection";
+import { useParams } from "react-router-dom";
+import { useProjectStore } from "@/stores/ProjectStore";
 
 const ProjectDetails = lazy(() => import("@/components/pages/project/ProjectDetails"));
 const ProjectPics = lazy(() => import("@/components/pages/project/ProjectPics"));
@@ -11,6 +13,24 @@ const About = lazy(() => import("@/components/pages/project/projecttabs/about"))
 
 
 export default function ProjectPage(){
+  const { id } = useParams<{ id: string }>()
+  const [loading ,setLoading]=useState(false);
+  const{ getProjectById }=useProjectStore();
+
+  React.useEffect(() => {
+      const fetchProject = async () => {
+        setLoading(true)
+        try {
+          const data = await getProjectById(id)
+        } catch (error) {
+          console.error("Failed to fetch project:", error)
+        } finally {
+          setLoading(false)
+        }
+      }
+      fetchProject()
+    }, [id])
+
   const tabs = [
     {
       id: "about",

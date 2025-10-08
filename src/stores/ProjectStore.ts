@@ -9,7 +9,7 @@ interface ProjectState {
   fetchProjects: () => Promise<void>
   deleteProject: (id:number) => Promise<void>
   updateProject: (id:number,project: Project) => Promise<void>
-  getProjectById: (id:number) => Promise<void>
+  getProjectById: (id:number | string) => Promise<void>
 }
 
 export const useProjectStore = create<ProjectState>((set) => ({

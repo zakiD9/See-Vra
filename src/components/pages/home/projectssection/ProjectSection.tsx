@@ -1,12 +1,17 @@
 import { Activity, Ellipsis, FolderCog, GraduationCap, Handbag, HandCoins, Network } from "lucide-react";
-import React, { lazy, Suspense } from "react";
+import React, { lazy, Suspense, useEffect } from "react";
 import SideBar from "./SideBar";
 import { useTranslation } from "react-i18next";
-import projects from "../../../../data/projects.json";
+import { useProjectStore } from "@/stores/ProjectStore";
 
 const ProjectCard = lazy(() => import("./ProjectCard"));
 
 export default function ProjectsSection(){
+
+    const {
+      projects,
+      fetchProjects
+    } = useProjectStore()
     const{t,i18n}=useTranslation();
     const types = [
     { id: 1, name: t("siderbarTypes.eLearning"), logo: <GraduationCap size={18} />, checked: true },
@@ -19,6 +24,11 @@ export default function ProjectsSection(){
     { id: 8, name: t("siderbarTypes.androidMobile"), logo: <span className="text-xs">And</span>, checked: true },
     { id: 9, name: t("siderbarTypes.others"), logo: <Ellipsis size={18} />, checked: false },
   ];
+
+
+    useEffect(() => {
+      fetchProjects()
+    }, [fetchProjects])
 
     return(
         <div className="flex flex-col gap-2 items-center">

@@ -1,5 +1,6 @@
 import React, { ReactNode } from "react";
 import Button from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 
 interface ProjectCardProps {
   id: number;
@@ -16,6 +17,13 @@ interface ProjectCardProps {
   description,
   action,
 }: ProjectCardProps) {
+  const navigate = useNavigate()
+
+  const handleViewProject = () => {
+    navigate(`/projects/${id}`)
+  }
+
+
   return (
     <div className="flex flex-col gap-2">
       <div className="flex items-center gap-2">
@@ -32,7 +40,7 @@ interface ProjectCardProps {
         />
         <span className="px-4 text-gray-400 truncate">{description}</span>
         <div className="px-4">
-          {action ? action : <Button>view-project</Button>}
+          {action ? action : <Button onClick={handleViewProject}>view-project</Button>}
         </div>
       </div>
     </div>

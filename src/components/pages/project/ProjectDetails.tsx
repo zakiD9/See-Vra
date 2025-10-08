@@ -2,7 +2,7 @@ import Button from "@/components/ui/button";
 import pic from "../../../assets/442be4e94bd264c7265d12af6646fb185519a39f.png"
 
 
-export default function ProjectDetails(){
+export default function ProjectDetails({}){
     return(
         <div className="flex flex-col w-full gap-5 mt-2">
         <div className="flex justify-between items-center">
