@@ -8,15 +8,39 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { LogOut, ArrowDown } from "lucide-react"
+import { useAuthStore } from "@/stores/AuthStore"
+import { useNavigate } from "react-router-dom"
 
 export default function CustomDropdown() {
+  const navigate =useNavigate();
+  const { logout } = useAuthStore()
+
+  const handleLogout = async () => {
+  const confirmLogout = window.confirm("Are you sure you want to log out?");
+  if (!confirmLogout) return;
+
+  try {
+    await logout();
+    navigate("/adminlogin");
+  } catch (error) {
+    console.error("Logout failed:", error);
+  }
+};
+
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" className="p-2 rounded-full border-0 bg-white"><ArrowDown className="h-5 w-5"/></Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-56">
-        <DropdownMenuItem className="text-red-600">
+        <Button variant="outline" className="p-2 rounded-full border-0 bg-white">
+          <ArrowDown className="h-5 w-5" />
+        </Button>
+      </DropdownMenuTrigger>
+
+      <DropdownMenuContent className="w-56">
+        <DropdownMenuItem
+          className="text-red-600 cursor-pointer"
+          onClick={handleLogout}
+        >
           <LogOut className="mr-2 h-4 w-4" />
           <span>Logout</span>
         </DropdownMenuItem>

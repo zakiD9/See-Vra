@@ -58,7 +58,7 @@ export const useProjectStore = create<ProjectState>((set) => ({
     }
     },
     getProjectById: async (id:number) => {
-    set({ loading: true, error: null })
+    set({error: null })
     try {
     const project = await ProjectService.getProjectById(id)
     console.log(project);

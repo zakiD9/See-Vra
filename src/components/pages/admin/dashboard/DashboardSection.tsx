@@ -1,61 +1,108 @@
+"use client"
 
-import { CheckCircle, XCircle, Clock } from "lucide-react"
+import { useEffect, useState } from "react"
 import { UserRound, Rocket, Handshake, Lightbulb } from "lucide-react"
-import DemandCard from "./DemandCard"
 import { StatCard } from "./stat/statCard"
+import StatsDialog from "./stat/statPopUp"
+import { useStatisticStore } from "@/stores/StatisticStore"
 
-const demandStats = [
-  {
-    title: "Accepted",
-    value: 124,
-    icon: CheckCircle,
-    color: "text-green-600",
-    bg: "bg-green-100"
-  },
-  {
-    title: "Rejected",
-    value: 32,
-    icon: XCircle,
-    color: "text-red-600",
-    bg: "bg-red-100"
-  },
-  {
-    title: "Pending",
-    value: 58,
-    icon: Clock,
-    color: "text-yellow-600",
-    bg: "bg-yellow-100"
+export default function Dashboard() {
+  const [open, setOpen] = useState(false)
+  const [selectedStat, setSelectedStat] = useState<any | null>(null)
+  const [newValue, setNewValue] = useState<number>(0)
+  const [isFetching, setIsFetching] = useState(false)
+  const [stats, setStats] = useState([
+    { id: 1, title: "Satisfied Clients", value: 0, icon: UserRound, color: "text-blue-400" },
+    { id: 2, title: "Startups Solutions", value: 0, icon: Rocket, color: "text-green-500" },
+    { id: 3, title: "B2B Projects", value: 0, icon: Handshake, color: "text-orange-500" },
+    { id: 4, title: "Creative Services", value: 0, icon: Lightbulb, color: "text-yellow-400" },
+  ])
+
+  const { getStatisticById, updateStatistic } = useStatisticStore()
+
+  useEffect(() => {
+    const fetchCounters = async () => {
+      setIsFetching(true)
+      try {
+        const updated = await Promise.all(
+          stats.map(async (stat) => {
+            const data = await getStatisticById(stat.id)
+            return { ...stat, value: data?.counter ?? 0 }
+          })
+        )
+        setStats(updated)
+      } catch (error) {
+        console.error("Failed to load counters:", error)
+      } finally {
+        setIsFetching(false)
+      }
+    }
+
+    fetchCounters()
+  }, [getStatisticById])
+
+  const handleCardClick = (stat: any) => {
+    setSelectedStat(stat)
+    setNewValue(stat.value)
+    setOpen(true)
   }
-]
 
- const stats = [
-    { title: "Satisfied Clients", value: 120, icon: UserRound, color: "text-blue-400" },
-    { title: "Startups Solutions", value: 95, icon: Rocket, color: "text-green-500" },
-    { title: "B2B Projects", value: 200, icon: Handshake, color: "text-orange-500" },
-    { title: "Creative Services", value: 150, icon: Lightbulb, color: "text-yellow-400" },
-  ]
+  const handleSave = async () => {
+    if (!selectedStat?.id) return
 
-export default function Dashboard(){
+    const payload = { counter: newValue }
 
-    return(
-        <div className="bg-white flex-col flex gap-5 text-black">
-            <h1 className="text-2xl font-semibold">Dashboard</h1>
-            <div className="flex flex-col gap-4">
-                <h1 className="text-xl font-medium border-b-2">Demands Section:</h1>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-            {demandStats.map((stat)=>(
-                <DemandCard {...stat}/>
-            ))}
-            </div>
-            </div>
-            <div className="flex flex-col gap-4">
-                <h1 className="text-xl font-medium border-b-2">Stats Section:</h1>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                {stats.map((stat) => (
-                  <StatCard key={stat.title} {...stat} />
-                ))}
-            </div>
-            </div>
+    try {
+      const updated = await updateStatistic(selectedStat.id, payload)
+      if (updated) {
+        setStats((prev) =>
+          prev.map((s) =>
+            s.id === selectedStat.id ? { ...s, value: newValue } : s
+          )
+        )
+        setOpen(false)
+        alert("Statistic updated successfully!")
+      } else {
+        alert("Failed to update statistic.")
+      }
+    } catch (error) {
+      console.error("Error updating stat:", error)
+      alert("An error occurred while updating.")
+    }
+  }
+
+  return (
+    <div className="bg-white flex-col flex gap-5 text-black">
+      <h1 className="text-2xl font-semibold">Dashboard</h1>
+
+      <div className="flex flex-col gap-4">
+        <h1 className="text-xl font-medium border-b-2">Stats Section:</h1>
+
+        {isFetching && <p className="p-2">Loading counters...</p>}
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {stats.map((stat) => (
+            <StatCard
+              key={stat.id}
+              title={stat.title}
+              value={stat.value}
+              icon={stat.icon}
+              color={stat.color}
+              onClick={() => handleCardClick(stat)}
+            />
+          ))}
         </div>
-    )
+      </div>
+
+      <StatsDialog
+        open={open}
+        onOpenChange={setOpen}
+        stat={selectedStat}
+        value={newValue}
+        onValueChange={setNewValue}
+        onSave={handleSave}
+        isLoading={isFetching}
+      />
+    </div>
+  )
 }

@@ -20,6 +20,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { useProjectStore } from "@/stores/ProjectStore"
 
 type ProjectFeature = {
   feature: string
@@ -62,7 +63,9 @@ export function ProjectDialog({
   onSave,
 }: ProjectDialogProps) {
   const isEditMode = !!project
+  const {getProjectById}=useProjectStore();
   const [error, setError] = React.useState("")
+  const [loading, setLoading] = React.useState(false)
 
   const [form, setForm] = React.useState<Project>({
     id: project?.id ?? Date.now(),
@@ -84,13 +87,28 @@ export function ProjectDialog({
     },
   })
 
-  // Handle change for nested structures
   const handleStackChange = (field: keyof ProjectStacks, value: string) => {
     setForm((prev) => ({
       ...prev,
       projectStacks: { ...prev.projectStacks, [field]: value },
     }))
   }
+
+  React.useEffect(() => {
+    const fetchProject = async () => {
+      if (!isEditMode || !project?.id) return
+      setLoading(true)
+      try {
+        const data = await getProjectById(project.id)
+        if (data) setForm(data)
+      } catch (error) {
+        console.error("Failed to fetch project:", error)
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchProject()
+  }, [project?.id, isEditMode])
 
   const handleFeatureChange = (
     index: number,
@@ -141,7 +159,11 @@ export function ProjectDialog({
       <DialogContent
         className="bg-white text-black max-h-[80vh] overflow-y-auto rounded-2xl"
       >
-        <DialogHeader>
+        {loading ? (
+          <p>Loading project details...</p>
+        ) : (
+          <>
+            <DialogHeader>
           <DialogTitle>{isEditMode ? "Edit Project" : "Add Project"}</DialogTitle>
           <DialogDescription>
             {isEditMode
@@ -327,6 +349,8 @@ export function ProjectDialog({
             {isEditMode ? "Save Changes" : "Create Project"}
           </Button>
         </DialogFooter>
+          </>
+        )}
       </DialogContent>
     </Dialog>
   )

@@ -2,6 +2,7 @@ import Button from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useAuthStore } from "@/stores/AuthStore";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 
 
@@ -9,14 +10,21 @@ export default function LoginForm() {
   const login = useAuthStore((state) => state.login);
   const loading = useAuthStore((state) => state.loading);
   const error = useAuthStore((state) => state.error);
+  const navigate = useNavigate()
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    await login(email, password);
-  };
+    e.preventDefault()
+    await login(email, password)
+
+    const token = localStorage.getItem("token")
+    if (token) {
+      navigate("/admin/dashboard")
+    }
+  }
+
 
 
   return (

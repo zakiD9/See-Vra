@@ -49,7 +49,6 @@ export function DemandDialog({
   const [demandDetails, setDemandDetails] = React.useState<Demand | null>(demand ?? null)
   const { getRequestById, loading } = useRequestStore()
 
-  // Fetch demand details by ID when dialog opens
   React.useEffect(() => {
     const fetchDemand = async () => {
       if (demand?.id) {

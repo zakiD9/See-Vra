@@ -1,53 +1,31 @@
 "use client"
 
+import { useEffect } from "react"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Badge } from "@/components/ui/badge"
 import { ChartPie } from "lucide-react"
-// import DeleteButton from "@/components/ui/table/delete"
-// import EditButton from "@/components/ui/table/edit"
+import { useAuthStore } from "@/stores/AuthStore"
 import { UserDialog } from "./UsersPopUp"
-import { useState } from "react"
-
-type User = {
-  id: number
-  avatar: string
-  firstName: string
-  lastName: string
-  status: "active" | "inactive" | "pending"
-}
-
-const users: User[] = [
-  {
-    id: 1,
-    avatar: "https://i.pravatar.cc/100?img=1",
-    firstName: "Zakaria",
-    lastName: "Djerboa",
-    status: "active",
-  },
-  {
-    id: 2,
-    avatar: "https://i.pravatar.cc/100?img=2",
-    firstName: "Sarah",
-    lastName: "Ali",
-    status: "inactive",
-  },
-  {
-    id: 3,
-    avatar: "https://i.pravatar.cc/100?img=3",
-    firstName: "Omar",
-    lastName: "Bensalem",
-    status: "pending",
-  },
-]
+import DeleteButton from "@/components/ui/table/delete"
 
 export default function UsersTable() {
-  const [usersData, setUsersData] = useState(users)
-  const [selectedUser, setSelectedUser] = useState<User | null>(null)
-  const [open, setOpen] = useState(false)
-  const handleSave = (updatedUser: User) => {
-    setUsersData((prev) =>
-      prev.map((u) => (u.id === updatedUser.id ? updatedUser : u))
-    )
+  const { admins, fetchAdmins, loading, error ,deleteAdmin } = useAuthStore()
+
+  useEffect(() => {
+    fetchAdmins()
+  }, [fetchAdmins])
+
+  const handleDelete = async (id: string, email: string) => {
+    const confirmed = confirm(`Are you sure you want to delete admin "${email}"?`)
+    if (!confirmed) return
+
+    try {
+      await deleteAdmin(id)
+      alert(`Admin "${email}" deleted successfully.`)
+    } catch (err) {
+      console.error("Failed to delete admin:", err)
+      alert("Failed to delete admin.")
+    }
   }
 
   return (
@@ -55,62 +33,38 @@ export default function UsersTable() {
       <div className="flex items-center justify-between p-4">
         <h2 className="text-lg font-semibold flex items-center gap-2">
           <ChartPie className="h-5 w-5 text-blue-500" />
-          Users
+          Admin Users
         </h2>
       </div>
 
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead className="w-[80px]">Avatar</TableHead>
-            <TableHead>First Name</TableHead>
-            <TableHead>Last Name</TableHead>
-            <TableHead>Status</TableHead>
-            {/* <TableHead>Actions</TableHead> */}
-          </TableRow>
-        </TableHeader>
+      {loading && <p className="p-4 text-gray-500">Loading admins...</p>}
+      {error && <p className="p-4 text-red-600">{error}</p>}
 
-        <TableBody>
-          {usersData.map((user) => (
-            <TableRow key={user.id}>
-              <TableCell>
-                <img
-                  src={user.avatar}
-                  alt={`${user.firstName} ${user.lastName}`}
-                  className="h-10 w-10 rounded-full object-cover"
-                />
-              </TableCell>
-              <TableCell>{user.firstName}</TableCell>
-              <TableCell>{user.lastName}</TableCell>
-              <TableCell>
-                <Badge
-                  variant={
-                    user.status === "active"
-                      ? "default"
-                      : user.status === "inactive"
-                      ? "destructive"
-                      : "secondary"
-                  }
-                >
-                  {user.status}
-                </Badge>
-              </TableCell>
-            {/* <TableCell className="text-right">
-              <div className="flex gap-2 items-center">
-                  <EditButton onClick={() => { setSelectedUser(user); setOpen(true) }}/>
-                  <DeleteButton />
-              </div>
-            </TableCell> */}
+      {!loading && !error && (
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>ID</TableHead>
+              <TableHead>Email</TableHead>
+              <TableHead>Status</TableHead>
+              <TableHead>Actions</TableHead>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-      <UserDialog 
-        open={open}
-        onOpenChange={setOpen}
-        user={selectedUser}
-        onSave={handleSave}
-      />
+          </TableHeader>
+
+          <TableBody>
+            {admins.map((admin) => (
+              <TableRow key={admin.id}>
+                <TableCell>{admin.id}</TableCell>
+                <TableCell>{admin.email}</TableCell>
+                <TableCell>
+                  <Badge variant="default">Admin</Badge>
+                </TableCell>
+                <TableCell><DeleteButton onClick={() => handleDelete(admin.id, admin.email)} /></TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      )}
     </div>
   )
 }
