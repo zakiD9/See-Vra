@@ -5,7 +5,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Badge } from "@/components/ui/badge"
 import { ChartPie } from "lucide-react"
 import { useAuthStore } from "@/stores/AuthStore"
-import { UserDialog } from "./UsersPopUp"
+// import { UserDialog } from "./UsersPopUp"
 import DeleteButton from "@/components/ui/table/delete"
 
 export default function UsersTable() {

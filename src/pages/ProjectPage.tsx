@@ -14,18 +14,17 @@ const About = lazy(() => import("@/components/pages/project/projecttabs/about"))
 
 export default function ProjectPage(){
   const { id } = useParams<{ id: string }>()
-  const [loading ,setLoading]=useState(false);
   const{ getProjectById }=useProjectStore();
+  const[project,setProject]=useState<any>({});
 
   React.useEffect(() => {
       const fetchProject = async () => {
-        setLoading(true)
         try {
           const data = await getProjectById(id)
+          setProject(data);
+          console.log(data)
         } catch (error) {
           console.error("Failed to fetch project:", error)
-        } finally {
-          setLoading(false)
         }
       }
       fetchProject()
@@ -57,10 +56,10 @@ export default function ProjectPage(){
             <main className="flex flex-col gap-10">
             <div className="container mx-auto px-4 flex flex-col gap-10">
             <Suspense fallback={<div>Loading project...</div>}>
-            <ProjectDetails />
+            <ProjectDetails figmaLink={project.uiUxLink} mainImage={project.imgUrl} projectTitle={project.title} seeAllLink={project.about} />
             <ReusableTabs tabs={tabs} />
-            <ProjectPics />
-            <OfferndUsed />
+            <ProjectPics githubLink={project.githubLink} projectImgs={project.projectImgs}  />
+            <OfferndUsed about={project.about} used={project.projectStacks} />
             </Suspense>
             </div>
             </main>

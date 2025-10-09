@@ -10,7 +10,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import DeleteButton from "@/components/ui/table/delete"
+// import DeleteButton from "@/components/ui/table/delete"
 import ViewButton from "@/components/ui/table/view"
 import { DemandDialog } from "./ViewdemandPopUp"
 
@@ -61,7 +61,7 @@ export function DemandsTable() {
                         setSelected(req)
                       }}
                     />
-                    <DeleteButton />
+                    {/* <DeleteButton /> */}
                   </div>
                 </TableCell>
               </TableRow>

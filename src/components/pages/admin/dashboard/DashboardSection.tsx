@@ -12,10 +12,10 @@ export default function Dashboard() {
   const [newValue, setNewValue] = useState<number>(0)
   const [isFetching, setIsFetching] = useState(false)
   const [stats, setStats] = useState([
-    { id: 1, title: "Satisfied Clients", value: 0, icon: UserRound, color: "text-blue-400" },
-    { id: 2, title: "Startups Solutions", value: 0, icon: Rocket, color: "text-green-500" },
-    { id: 3, title: "B2B Projects", value: 0, icon: Handshake, color: "text-orange-500" },
-    { id: 4, title: "Creative Services", value: 0, icon: Lightbulb, color: "text-yellow-400" },
+    { id: 2, title: "Satisfied Clients", value: 0, icon: UserRound, color: "text-blue-400" },
+    { id: 3, title: "Startups Solutions", value: 0, icon: Rocket, color: "text-green-500" },
+    { id: 4, title: "B2B Projects", value: 0, icon: Handshake, color: "text-orange-500" },
+    { id: 5, title: "Creative Services", value: 0, icon: Lightbulb, color: "text-yellow-400" },
   ])
 
   const { getStatisticById, updateStatistic } = useStatisticStore()

@@ -21,21 +21,31 @@ const used = [
   },
 ]
 
+interface used{
+  img:string;
+  name:string;
+}
+
+interface offerndUsedProps{
+  about:string;
+  used:used[];
+}
 
 
-export default function OfferndUsed(){
+
+export default function OfferndUsed({about,used}:offerndUsedProps){
 
     return(
         <div className="flex justify-between gap-10">
             <div className="w-3/5 flex flex-col gap-5">
                 <h1 className="text-3xl font-semibold">What We Offer</h1>
-                <span className="text-left text-sm">Product Catalog: Displays a variety of fashion items, complete with images, descriptions, and prices. Shopping Cart: Allows users to save products they wish to purchase before proceeding to checkout. Online Payment: Integration of payment methods for secure and convenient transactions. User Profile: A feature for managing account information and purchase history.</span>
+                <span className="text-left text-sm">{about}</span>
             </div>
             <div className="w-2/5 flex flex-col gap-3">
-                <h1 className="text-3xl font-semibold">What We Offer</h1>
+                <h1 className="text-3xl font-semibold">What We Use</h1>
                 {used.map((use)=>(
                 <div className="flex gap-3 items-center">
-                    <img src={use.pic} alt="pic" loading="lazy" className="h-8 w-8" />
+                    <img src={use.img} alt="pic" loading="lazy" className="h-8 w-8" />
                     <span>{use.name}</span>
                 </div>
                 ))

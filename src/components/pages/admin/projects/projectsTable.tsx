@@ -15,11 +15,29 @@ import { useEffect, useState } from "react"
 import { useProjectStore } from "@/stores/ProjectStore"
 import { ConfirmDialog } from "@/components/ui/dialog/confirmationDialog"
 
+export interface ProjectFeature {
+  feature: string
+  description: string
+}
+
+export interface ProjectStack {
+  frontEndStack: string
+  backEndStack: string
+  databaseStack: string
+}
+
 export interface Project {
-  id: number
+  id:number;
   category: string
   title: string
   about: string
+  uiUxLink: string
+  githubLink: string
+  description: string
+  imgUrl: string
+  projectImgs: string[]
+  projectFeatures: ProjectFeature[]
+  projectStacks: ProjectStack[]
 }
 
 export default function ProjectsTable() {
@@ -27,7 +45,6 @@ export default function ProjectsTable() {
     projects,
     fetchProjects,
     deleteProject,
-    updateProject,
     loading,
     error,
   } = useProjectStore()
@@ -40,12 +57,6 @@ export default function ProjectsTable() {
   useEffect(() => {
     fetchProjects()
   }, [fetchProjects])
-
-  const handleSave = async (updatedProject: Project) => {
-    if (!updatedProject || !updatedProject.id) return
-    await updateProject(updatedProject.id, updatedProject)
-    await fetchProjects()
-  }
 
   const handleDelete = async () => {
     if (deleteId === null) return
@@ -101,7 +112,6 @@ export default function ProjectsTable() {
         open={open}
         onOpenChange={setOpen}
         project={selectedProject}
-        onSave={handleSave}
       />
       <ConfirmDialog
         open={confirmOpen}

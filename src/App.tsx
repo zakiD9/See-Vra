@@ -15,13 +15,13 @@ function App() {
     <Suspense fallback={<div>Loading...</div>}>
     <Routes>
         <Route path="/" element={<LazyHomePage />} />
-        <Route path="/project" element={<LazyProjectPage />} />
+        <Route path="/project/:id" element={<LazyProjectPage />} />
         <Route path="/admin" element={<AdminPage />}>
           <Route index element={<Dashboard />} />
           <Route path="users" element={<Users />} />
           <Route path="projects" element={<Projects />} />
           <Route path="demands" element={<Demands />} />
-  </Route>
+        </Route>
         <Route path="/adminlogin" element={<AdminLoginPage />} />
     </Routes>
     </Suspense>

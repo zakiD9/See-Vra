@@ -48,7 +48,7 @@ export const useRequestStore = create<RequestState>((set) => ({
   },
 
   getRequestById: async (id) => {
-    set({ loading: true, error: null })
+    set({ error: null })
     try {
       const request = await RequestService.getRequestById(id)
       set({ loading: false })

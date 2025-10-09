@@ -1,5 +1,5 @@
 
-import { CustomFilter } from "@/components/ui/filter";
+// import { CustomFilter } from "@/components/ui/filter";
 import { SearchInput } from "@/components/ui/search";
 import { DemandsTable } from "./demandsTable";
 
@@ -31,13 +31,13 @@ export default function Demands(){
                 <div className="flex w-1/2">
                 <SearchInput />
                 </div>
-                <CustomFilter options={[
+                {/* <CustomFilter options={[
     { label: "All", value: "all" },
     { label: "Accepted", value: "accepted" },
     { label: "Rejected", value: "rejected" },
     { label: "Pending", value: "pending" },
   ]}
-  onSelect={(val) => console.log("Selected:", val)}/>
+  onSelect={(val) => console.log("Selected:", val)}/> */}
             </div>
             <DemandsTable data={demands} />
         </div>

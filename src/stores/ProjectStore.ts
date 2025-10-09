@@ -5,10 +5,10 @@ interface ProjectState {
   projects: Project[]
   loading: boolean
   error: string | null
-  addProject: (project: Project) => Promise<void>
+  addProject: (payload: Project) => Promise<void>
   fetchProjects: () => Promise<void>
   deleteProject: (id:number) => Promise<void>
-  updateProject: (id:number,project: Project) => Promise<void>
+  updateProject: (id:number,payload: Project) => Promise<void>
   getProjectById: (id:number | string) => Promise<void>
 }
 

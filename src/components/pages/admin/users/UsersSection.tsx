@@ -1,15 +1,15 @@
 
-import { CustomFilter } from "@/components/ui/filter";
+// import { CustomFilter } from "@/components/ui/filter";
 import { SearchInput } from "@/components/ui/search";
 import UsersTable from "./usersTable";
 import Button from "@/components/ui/button";
 import { Plus } from "lucide-react";
-// import { useState } from "react";
-// import { UserDialog } from "./UsersPopUp";
+import { useState } from "react";
+import { UserDialog } from "./UsersPopUp";
 
 
 export default function Users(){
-  // const [dialogOpen, setDialogOpen] = useState(false)
+  const [dialogOpen, setDialogOpen] = useState(false)
   
 
     return(
@@ -21,22 +21,22 @@ export default function Users(){
                 </div>
                 <div className="flex items-center gap-2">
                 <Button onClick={() => {
-              // setDialogOpen(true)
+              setDialogOpen(true)
             }} variant="outline" className="bg-white rounded-full gap-1"><Plus />Add New User</Button>
-                <CustomFilter options={[
+                {/* <CustomFilter options={[
     { label: "All", value: "all" },
     { label: "Accepted", value: "accepted" },
     { label: "Rejected", value: "rejected" },
     { label: "Pending", value: "pending" },
   ]}
-  onSelect={(val) => console.log("Selected:", val)}/>
+  onSelect={(val) => console.log("Selected:", val)}/> */}
                 </div>
             </div>
             <UsersTable />
-            {/* <UserDialog
+            <UserDialog
         open={dialogOpen}
         onOpenChange={setDialogOpen}
-      /> */}
+      />
         </div>
     )
 }

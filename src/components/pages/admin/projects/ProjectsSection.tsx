@@ -1,5 +1,5 @@
 
-import { CustomFilter } from "@/components/ui/filter";
+// import { CustomFilter } from "@/components/ui/filter";
 import { SearchInput } from "@/components/ui/search";
 import ProjectsTable from "./projectsTable";
 import Button from "@/components/ui/button";
@@ -20,13 +20,13 @@ export default function Projects(){
                 </div>
                 <div className="flex items-center gap-2">
                 <Button onClick={()=>{setOpen(!open)}} variant="outline" className="bg-white rounded-full gap-1"><Plus />Add New Project</Button>
-                <CustomFilter options={[
+                {/* <CustomFilter options={[
     { label: "All", value: "all" },
     { label: "Accepted", value: "accepted" },
     { label: "Rejected", value: "rejected" },
     { label: "Pending", value: "pending" },
   ]}
-  onSelect={(val) => console.log("Selected:", val)}/>
+  onSelect={(val) => console.log("Selected:", val)}/> */}
                 </div>
             </div>
             <ProjectsTable />

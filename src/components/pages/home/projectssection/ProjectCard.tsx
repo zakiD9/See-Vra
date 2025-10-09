@@ -20,7 +20,7 @@ interface ProjectCardProps {
   const navigate = useNavigate()
 
   const handleViewProject = () => {
-    navigate(`/projects/${id}`)
+    navigate(`/project/${id}`)
   }
 
 

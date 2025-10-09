@@ -11,13 +11,6 @@ import {
 } from "@/components/ui/dialog"
 import Button from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
 import { useRequestStore } from "@/stores/RequestStore"
 
 type Demand = {
@@ -27,7 +20,6 @@ type Demand = {
   phone: string
   service: string
   description: string
-  status?: "accepted" | "rejected" | "pending"
 }
 
 interface DemandDialogProps {
@@ -41,11 +33,7 @@ export function DemandDialog({
   open,
   onOpenChange,
   demand,
-  onSave,
 }: DemandDialogProps) {
-  const [status, setStatus] = React.useState<"accepted" | "rejected" | "pending">(
-    demand?.status ?? "pending"
-  )
   const [demandDetails, setDemandDetails] = React.useState<Demand | null>(demand ?? null)
   const { getRequestById, loading } = useRequestStore()
 
@@ -62,12 +50,6 @@ export function DemandDialog({
     }
   }, [open, demand?.id, getRequestById])
 
-  React.useEffect(() => {
-    if (demandDetails) {
-      setStatus(demandDetails.status ?? "pending")
-    }
-  }, [demandDetails])
-
   if (!demandDetails) return null
 
   return (
@@ -76,7 +58,7 @@ export function DemandDialog({
         <DialogHeader>
           <DialogTitle>Update Demand</DialogTitle>
           <DialogDescription>
-            Review the demand details and update its status.
+            Review the demand details.
           </DialogDescription>
         </DialogHeader>
 
@@ -105,27 +87,8 @@ export function DemandDialog({
             </div>
 
             <div>
-              <Label>Description</Label>
-              <p className="text-gray-700">{demandDetails.description}</p>
-            </div>
-
-            <div className="space-y-2">
-              <Label>Status</Label>
-              <Select
-                value={status}
-                onValueChange={(val: "accepted" | "rejected" | "pending") =>
-                  setStatus(val)
-                }
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Select status" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="accepted">Accepted</SelectItem>
-                  <SelectItem value="rejected">Rejected</SelectItem>
-                  <SelectItem value="pending">Pending</SelectItem>
-                </SelectContent>
-              </Select>
+              <Label className="">Description</Label>
+              <p className="text-gray-700 break-words whitespace-pre-wrap">{demandDetails.description}</p>
             </div>
           </div>
         )}
@@ -136,16 +99,7 @@ export function DemandDialog({
             className="bg-white"
             onClick={() => onOpenChange(false)}
           >
-            Cancel
-          </Button>
-          <Button
-            onClick={() => {
-              if (onSave && demandDetails)
-                onSave({ ...demandDetails, status })
-              onOpenChange(false)
-            }}
-          >
-            Save
+            Done
           </Button>
         </DialogFooter>
       </DialogContent>
