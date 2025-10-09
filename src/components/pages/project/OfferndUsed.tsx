@@ -22,8 +22,8 @@ const used = [
 ]
 
 interface used{
-  img:string;
-  name:string;
+  icon:string;
+  title:string;
 }
 
 interface offerndUsedProps{
@@ -45,8 +45,8 @@ export default function OfferndUsed({about,used}:offerndUsedProps){
                 <h1 className="text-3xl font-semibold">What We Use</h1>
                 {used.map((use)=>(
                 <div className="flex gap-3 items-center">
-                    <img src={use.img} alt="pic" loading="lazy" className="h-8 w-8" />
-                    <span>{use.name}</span>
+                    <img src={use.icon} alt="pic" loading="lazy" className="h-8 w-8" />
+                    <span>{use.title}</span>
                 </div>
                 ))
 

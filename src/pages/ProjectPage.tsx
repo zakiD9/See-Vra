@@ -57,7 +57,7 @@ export default function ProjectPage(){
             <div className="container mx-auto px-4 flex flex-col gap-10">
             <Suspense fallback={<div>Loading project...</div>}>
             <ProjectDetails figmaLink={project.uiUxLink} mainImage={project.imgUrl} projectTitle={project.title} seeAllLink={project.about} />
-            <ReusableTabs tabs={tabs} />
+            <ReusableTabs tabs={project.projectFeatures} />
             <ProjectPics githubLink={project.githubLink} projectImgs={project.projectImgs}  />
             <OfferndUsed about={project.about} used={project.projectStacks} />
             </Suspense>
