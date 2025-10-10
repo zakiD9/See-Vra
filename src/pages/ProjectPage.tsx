@@ -30,25 +30,6 @@ export default function ProjectPage(){
       fetchProject()
     }, [id])
 
-  const tabs = [
-    {
-      id: "about",
-      label: "About",
-      content: (
-        <About />
-      ),
-    },
-    {
-      id: "feature",
-      label: "Feature",
-      content: <p>Feature details go here...</p>,
-    },
-    {
-      id: "stack",
-      label: "Stack",
-      content: <p>Tech stack information here...</p>,
-    },
-  ]
 
     return(
         <div className="bg-background flex flex-col items-center w-full gap-10">

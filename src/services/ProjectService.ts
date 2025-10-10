@@ -6,14 +6,16 @@ export interface ProjectFeature {
 }
 
 export interface Stack{
-  icon:File;
-  title:string;
+  iconFile:File;
+  name:string;
+  projectTech:string;
+  imageUrl:string;
 }
 
 export interface ProjectStack {
-  frontEndStack: Stack[]
-  backEndStack: Stack[]
-  databaseStack: Stack[]
+  frontEnd: Stack[]
+  backEnd: Stack[]
+  dataBase: Stack[]
 }
 
 export interface Project {

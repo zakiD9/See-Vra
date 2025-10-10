@@ -9,9 +9,8 @@ import {
 } from "@/components/ui/tabs"
 
 interface TabItem {
-  id: string
-  label: string
-  content: React.ReactNode
+  feature: string
+  description: string
 }
 
 interface ReusableTabsProps {
@@ -21,22 +20,22 @@ interface ReusableTabsProps {
 
 export function ReusableTabs({ tabs, defaultTab }: ReusableTabsProps) {
   return (
-    <Tabs defaultValue={defaultTab || tabs[0].id} className="w-full">
+    <Tabs defaultValue={defaultTab || tabs[0].feature} className="w-full">
       <TabsList className="w-full justify-start border-b border-gray-600 bg-transparent rounded-none">
         {tabs.map((tab) => (
           <TabsTrigger
-            key={tab.id}
-            value={tab.id}
+            key={tab.feature}
+            value={tab.feature}
             className="data-[state=active]:border-b-2 mb-1 data-[state=active]:border-blue-500 data-[state=active]:text-white rounded-none px-6 py-2 text-gray-300"
           >
-            {tab.title}
+            {tab.feature}
           </TabsTrigger>
         ))}
       </TabsList>
 
       {tabs.map((tab) => (
-        <TabsContent key={tab.id} value={tab.id} className="mt-4 text-gray-300">
-          {tab.description}
+        <TabsContent key={tab.feature} value={tab.feature} className="mt-4 text-gray-300">
+          <p>{tab.description}</p>
         </TabsContent>
       ))}
     </Tabs>

@@ -16,20 +16,22 @@ import { Textarea } from "@/components/ui/textarea"
 import { useProjectStore } from "@/stores/ProjectStore"
 import { Plus, X } from "lucide-react"
 
-export interface Stack{
-  icon:File;
-  title:string;
+export interface ProjectFeature {
+  feature: string
+  description: string
 }
 
-export interface ProjectFeature {
-  title: string
-  Description: string
+export interface Stack{
+  iconFile:File;
+  name:string;
+  projectTech:string;
+  imageUrl:string;
 }
 
 export interface ProjectStack {
-  frontEndStack: Stack[]
-  backEndStack: Stack[]
-  databaseStack: Stack[]
+  frontEnd: Stack[]
+  backEnd: Stack[]
+  dataBase: Stack[]
 }
 
 export interface Project {
@@ -41,11 +43,10 @@ export interface Project {
   githubLink: string
   description: string
   imgUrl: string
-  projectImgs: File[]
+  projectImgs: (string | File)[]
   projectFeatures: ProjectFeature[]
   projectStacks: ProjectStack[]
 }
-
 
 interface ProjectDialogProps {
   open: boolean
@@ -60,6 +61,7 @@ export function ProjectDialog({
   project,
   onSave,
 }: ProjectDialogProps) {
+  const [mainImageFile, setMainImageFile] = React.useState<File | null>(null);
   const isEditMode = !!project
   const { getProjectById, addProject, updateProject } = useProjectStore()
   const [error, setError] = React.useState("")
@@ -76,7 +78,7 @@ export function ProjectDialog({
     imgUrl: project?.imgUrl ?? "",
     projectImgs: project?.projectImgs ?? [],
     projectFeatures: project?.projectFeatures ?? [],
-    projectStacks: project?.projectStacks ?? [],
+    projectStacks: project?.projectStacks ?? [{ frontEnd: [], backEnd: [], dataBase: [] }],
   })
 
   React.useEffect(() => {
@@ -112,28 +114,57 @@ export function ProjectDialog({
     return true
   }
 
-  const handleSubmit = async () => {
-    if (!validateForm()) return
-    setLoading(true)
-    try {
-      if (isEditMode && project?.id) {
-        console.log(form)
-        await updateProject(project.id, form)
-        console.log("Project updated:", project.id)
-      } else {
-        await addProject(form)
-        console.log("Project created",form)
-      }
-
-      if (onSave) onSave(form)
-      onOpenChange(false)
-    } catch (error) {
-      console.error("Error saving project:", error)
-      setError("Failed to save project. Please try again.")
-    } finally {
-      setLoading(false)
-    }
+  function convertToServiceProject(form: Project): import("@/services/ProjectService").Project {
+  return {
+    ...form,
+    projectImgs: form.projectImgs.map((img) =>
+      typeof img === "string" ? img : URL.createObjectURL(img)
+    ),
+    projectStacks: form.projectStacks.map((stackGroup) => ({
+      ...stackGroup,
+      frontEnd: stackGroup.frontEnd.map((item) => ({
+        ...item,
+        iconFile: undefined,
+        imageUrl: typeof item.iconFile === "string" ? item.iconFile : URL.createObjectURL(item.iconFile),
+      })),
+      backEnd: stackGroup.backEnd.map((item) => ({
+        ...item,
+        iconFile: undefined,
+        imageUrl: typeof item.iconFile === "string" ? item.iconFile : URL.createObjectURL(item.iconFile),
+      })),
+      dataBase: stackGroup.dataBase.map((item) => ({
+        ...item,
+        iconFile: undefined,
+        imageUrl: typeof item.iconFile === "string" ? item.iconFile : URL.createObjectURL(item.iconFile),
+      })),
+    }))
   }
+}
+
+
+
+  const handleSubmit = async () => {
+  if (!validateForm()) return
+  setLoading(true)
+  try {
+    const payload = convertToServiceProject(form)
+
+    if (isEditMode && project?.id) {
+      await updateProject(project.id, payload)
+    } else {
+      await addProject(payload)
+    }
+
+    onSave?.(form)
+    onOpenChange(false)
+  } catch (error) {
+    console.error("Error saving project:", error)
+    setError("Failed to save project. Please try again.")
+  } finally {
+    setLoading(false)
+  }
+}
+
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -226,9 +257,7 @@ export function ProjectDialog({
                 <Input
                   type="file"
                   accept="image/*"
-                  onChange={(e) =>
-                    setForm({ ...form, mainImageFile: e.target.files?.[0] || null })
-                  }
+                  onChange={(e) => setMainImageFile(e.target.files?.[0] || null)}
                 />
               </div>
 
@@ -255,7 +284,7 @@ export function ProjectDialog({
       onClick={() =>
         setForm({
           ...form,
-          projectFeatures: [...form.projectFeatures, { title: "", Description: "" }],
+          projectFeatures: [...form.projectFeatures, { feature: "", description: "" }],
         })
       }
       className="flex items-center bg-white gap-2"
@@ -286,10 +315,10 @@ export function ProjectDialog({
       <div className="space-y-2">
         <Label>Feature Title</Label>
         <Input
-          value={feature.title}
+          value={feature.feature}
           onChange={(e) => {
             const updated = [...form.projectFeatures]
-            updated[index].title = e.target.value
+            updated[index].feature = e.target.value
             setForm({ ...form, projectFeatures: updated })
           }}
           placeholder="Feature title"
@@ -299,10 +328,10 @@ export function ProjectDialog({
       <div className="space-y-2 mt-2">
         <Label>Description</Label>
         <Textarea
-          value={feature.Description}
+          value={feature.description}
           onChange={(e) => {
             const updated = [...form.projectFeatures]
-            updated[index].Description = e.target.value
+            updated[index].description = e.target.value
             setForm({ ...form, projectFeatures: updated })
           }}
           placeholder="Feature description"
@@ -316,95 +345,99 @@ export function ProjectDialog({
     <Label className="text-lg font-semibold">Project Stacks</Label>
   </div>
 
-  {/* Utility function for rendering one stack category (Frontend, Backend, Database) */}
-  {["frontEndStack", "backEndStack", "databaseStack"].map((stackType) => (
-    <div key={stackType} className="space-y-3 border p-3 rounded-xl bg-gray-50">
-      <div className="flex items-center justify-between">
-        <h3 className="font-medium">
-          {stackType === "frontEndStack"
-            ? "Frontend Stack"
-            : stackType === "backEndStack"
-            ? "Backend Stack"
-            : "Database Stack"}
-        </h3>
+  {["frontEnd", "backEnd", "dataBase"].map((stackType) => (
+  <div key={stackType} className="space-y-3 border p-3 rounded-xl bg-gray-50">
+    <div className="flex items-center justify-between">
+      <h3 className="font-medium">
+        {stackType === "frontEnd"
+          ? "Frontend Stack"
+          : stackType === "backEnd"
+          ? "Backend Stack"
+          : "Database Stack"}
+      </h3>
 
-        <Button
-          type="button"
-          variant="outline"
-          onClick={() => {
-            const updatedStacks = [...form.projectStacks]
-            if (updatedStacks.length === 0)
-              updatedStacks.push({
-                frontEndStack: [],
-                backEndStack: [],
-                databaseStack: [],
-              })
-            updatedStacks[0][stackType].push({ icon: {} as File, title: "" })
-            setForm({ ...form, projectStacks: updatedStacks })
-          }}
-          className="flex items-center bg-white gap-2"
-        >
-          <Plus size={16} /> Add Tech
-        </Button>
-      </div>
+      <Button
+        type="button"
+        variant="outline"
+        onClick={() => {
+          const updatedStacks = [...form.projectStacks]
+          if (updatedStacks.length === 0)
+            updatedStacks.push({
+              frontEnd: [],
+              backEnd: [],
+              dataBase: [],
+            })
+          updatedStacks[0][stackType].push({
+            iconFile: {} as File,
+            name: "",
+            projectTech: "",
+            imageUrl: "",
+          })
+          setForm({ ...form, projectStacks: updatedStacks })
+        }}
+        className="flex items-center bg-white gap-2"
+      >
+        <Plus size={16} /> Add Tech
+      </Button>
+    </div>
 
-      {/* Stack items */}
-      {form.projectStacks[0]?.[stackType]?.length > 0 ? (
-        form.projectStacks[0][stackType].map((item, idx) => (
-          <div key={idx} className="relative border p-3 rounded-xl bg-white">
-            <button
-              type="button"
-              onClick={() => {
+    {form.projectStacks[0]?.[stackType]?.length > 0 ? (
+      form.projectStacks[0][stackType].map((item, idx) => (
+        <div key={idx} className="relative border p-3 rounded-xl bg-white">
+          <button
+            type="button"
+            onClick={() => {
+              const updatedStacks = [...form.projectStacks]
+              updatedStacks[0][stackType] = updatedStacks[0][stackType].filter(
+                (_item, i) => i !== idx
+              )
+              setForm({ ...form, projectStacks: updatedStacks })
+            }}
+            className="absolute top-2 right-2 text-red-500 hover:text-red-700"
+          >
+            <X size={16} />
+          </button>
+
+          <div className="space-y-2">
+            <Label>Technology Name</Label>
+            <Input
+              value={item.name}
+              onChange={(e) => {
                 const updatedStacks = [...form.projectStacks]
-                updatedStacks[0][stackType] = updatedStacks[0][stackType].filter(
-                  (_: any, i: number) => i !== idx
-                )
+                updatedStacks[0][stackType][idx].name = e.target.value
                 setForm({ ...form, projectStacks: updatedStacks })
               }}
-              className="absolute top-2 right-2 text-red-500 hover:text-red-700"
-            >
-              <X size={16} />
-            </button>
-
-            <div className="space-y-2">
-              <Label>Technology Title</Label>
-              <Input
-                value={item.title}
-                onChange={(e) => {
-                  const updatedStacks = [...form.projectStacks]
-                  updatedStacks[0][stackType][idx].title = e.target.value
-                  setForm({ ...form, projectStacks: updatedStacks })
-                }}
-                placeholder="e.g. React, Node.js, MongoDB"
-              />
-            </div>
-
-            <div className="space-y-2 mt-2">
-              <Label>Upload Icon</Label>
-              <Input
-                type="file"
-                accept="image/*"
-                onChange={(e) => {
-                  const file = e.target.files?.[0]
-                  if (!file) return
-                  const updatedStacks = [...form.projectStacks]
-                  updatedStacks[0][stackType][idx].icon = file
-                  setForm({ ...form, projectStacks: updatedStacks })
-                }}
-              />
-              {item.icon && (item.icon as File).name && (
-                <p className="text-xs text-gray-500 mt-1">
-                  Selected: {(item.icon as File).name}
-                </p>
-              )}
-            </div>
+              placeholder="e.g. React, Node.js"
+            />
           </div>
-        ))
-      ) : (
-        <p className="text-sm text-gray-500">No technologies added yet.</p>
-      )}
-    </div>
-  ))}
+
+          <div className="space-y-2 mt-2">
+            <Label>Upload Icon</Label>
+            <Input
+              type="file"
+              accept="image/*"
+              onChange={(e) => {
+                const file = e.target.files?.[0]
+                if (!file) return
+                const updatedStacks = [...form.projectStacks]
+                updatedStacks[0][stackType][idx].iconFile = file
+                setForm({ ...form, projectStacks: updatedStacks })
+              }}
+            />
+            {item.iconFile && (item.iconFile as File).name && (
+              <p className="text-xs text-gray-500 mt-1">
+                Selected: {(item.iconFile as File).name}
+              </p>
+            )}
+          </div>
+        </div>
+      ))
+    ) : (
+      <p className="text-sm text-gray-500">No technologies added yet.</p>
+    )}
+  </div>
+))}
+
 </div>
           
             </div>

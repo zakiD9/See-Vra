@@ -20,10 +20,17 @@ export interface ProjectFeature {
   description: string
 }
 
+export interface Stack{
+  iconFile:File;
+  name:string;
+  projectTech:string;
+  imageUrl:string;
+}
+
 export interface ProjectStack {
-  frontEndStack: string
-  backEndStack: string
-  databaseStack: string
+  frontEnd: Stack[]
+  backEnd: Stack[]
+  dataBase: Stack[]
 }
 
 export interface Project {
