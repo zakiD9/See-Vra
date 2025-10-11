@@ -23,7 +23,7 @@ export default function Stats(){
         const updated = await Promise.all(
           stats.map(async (stat) => {
             const data = await getStatisticById(stat.id)
-            return { ...stat, value: data?.counter ?? 0 }
+            return { ...stat, value: data?.value ?? 0 }
           })
         )
         setStats(updated)

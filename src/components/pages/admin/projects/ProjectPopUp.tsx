@@ -86,8 +86,7 @@ export function ProjectDialog({
       setLoading(true)
       try {
         const data = await getProjectById(project.id)
-        console.log(data)
-        setForm(data)
+        if (data) setForm(data)
       } catch (error) {
         console.error("Failed to fetch project:", error)
       } finally {

@@ -19,8 +19,14 @@ export default function UsersTable() {
     const confirmed = confirm(`Are you sure you want to delete admin "${email}"?`)
     if (!confirmed) return
 
+    const numericId = Number(id)
+  if (isNaN(numericId)) {
+    alert("Invalid admin ID.")
+    return
+  }
+
     try {
-      await deleteAdmin(id)
+      await deleteAdmin(numericId)
       alert(`Admin "${email}" deleted successfully.`)
     } catch (err) {
       console.error("Failed to delete admin:", err)

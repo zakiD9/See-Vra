@@ -27,7 +27,7 @@ export default function Dashboard() {
         const updated = await Promise.all(
           stats.map(async (stat) => {
             const data = await getStatisticById(stat.id)
-            return { ...stat, value: data?.counter ?? 0 }
+            return { ...stat, value: data?.value ?? 0 }
           })
         )
         setStats(updated)
@@ -48,28 +48,23 @@ export default function Dashboard() {
   }
 
   const handleSave = async () => {
-    if (!selectedStat?.id) return
+  if (!selectedStat?.id) return
 
-    const payload = { counter: newValue }
-
-    try {
-      const updated = await updateStatistic(selectedStat.id, payload)
-      if (updated) {
-        setStats((prev) =>
-          prev.map((s) =>
-            s.id === selectedStat.id ? { ...s, value: newValue } : s
-          )
-        )
-        setOpen(false)
-        alert("Statistic updated successfully!")
-      } else {
-        alert("Failed to update statistic.")
-      }
-    } catch (error) {
-      console.error("Error updating stat:", error)
-      alert("An error occurred while updating.")
-    }
+  try {
+    await updateStatistic(selectedStat.id, { value: newValue })
+    setStats(prev =>
+      prev.map((s) =>
+        s.id === selectedStat.id ? { ...s, value: newValue } : s
+      )
+    )
+    setOpen(false)
+    alert("Statistic updated successfully!")
+  } catch (error) {
+    console.error("Error updating stat:", error)
+    alert("An error occurred while updating.")
   }
+}
+
 
   return (
     <div className="bg-white flex-col flex gap-5 text-black">

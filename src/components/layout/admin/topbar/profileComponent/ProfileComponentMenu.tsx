@@ -20,12 +20,12 @@ export default function Profile() {
       ) : (
         <>
           <img
-            src={user?.avatar || "/default-avatar.png"}
+            src={"/default-avatar.png"}
             alt="logo"
             className="h-10 w-10 object-cover rounded-lg"
           />
           <div className="flex flex-col gap-1">
-            <h1 className="font-semibold">{user?.name || "Unknown"}</h1>
+            <h1 className="font-semibold">{user?.email || "Unknown"}</h1>
             <h1 className="text-gray-600 text-sm">{user?.email || "No email"}</h1>
           </div>
           <CustomDropdown />

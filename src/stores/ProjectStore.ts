@@ -9,7 +9,7 @@ interface ProjectState {
   fetchProjects: () => Promise<void>
   deleteProject: (id:number) => Promise<void>
   updateProject: (id:number,payload: Project) => Promise<void>
-  getProjectById: (id:number | string) => Promise<void>
+  getProjectById: (id:number | string) => Promise<Project | null>
 }
 
 export const useProjectStore = create<ProjectState>((set) => ({
@@ -57,14 +57,14 @@ export const useProjectStore = create<ProjectState>((set) => ({
       set({ error: error.message || "Failed to update project", loading: false })
     }
     },
-    getProjectById: async (id:number) => {
-    set({error: null })
-    try {
-    const project = await ProjectService.getProjectById(id)
-    console.log(project);
+    getProjectById: async (id: number): Promise<Project | null> => {
+  set({ error: null });
+  try {
+    const project = await ProjectService.getProjectById(id);
     return project;
-    } catch (error: any) {
-      set({ error: error.message || "Failed to update project", loading: false })
-    }
-    },
+  } catch (error: any) {
+    set({ error: error.message || "Failed to update project", loading: false });
+    return null;
+  }
+},
 }))
