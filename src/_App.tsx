@@ -10,7 +10,7 @@ import Demands from "./components/pages/admin/demands/DemandsSection";
 const LazyHomePage = lazy(() => import("./pages/HomePage"));
 const LazyProjectPage = lazy(() => import("./pages/ProjectPage"));
 
-function App() {
+export default function App() {
   return (
     <Suspense fallback={<div>Loading...</div>}>
     <Routes>
@@ -27,5 +27,3 @@ function App() {
     </Suspense>
   );
 }
-
-export default App;
