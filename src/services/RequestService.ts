@@ -1,12 +1,12 @@
 import api from "@/services/api"
 
 export interface ContactRequest {
-  id?: number;
-  fullName: string;
-  service: string;
-  email: string;
-  phoneNumber: string;
-  description: string;
+  id?: number
+  company: string
+  email: string
+  phone: string
+  service: string
+  description: string
 }
 
 export const RequestService = {
