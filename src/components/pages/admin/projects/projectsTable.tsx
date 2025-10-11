@@ -42,9 +42,9 @@ export interface Project {
   githubLink: string
   description: string
   imgUrl: string
-  projectImgs: string[]
+  projectImgs: (string | File)[]
   projectFeatures: ProjectFeature[]
-  projectStacks: ProjectStack[]
+  projectStack: ProjectStack
 }
 
 export default function ProjectsTable() {

@@ -45,7 +45,7 @@ export interface Project {
   imgUrl: string
   projectImgs: (string | File)[]
   projectFeatures: ProjectFeature[]
-  projectStacks: ProjectStack[]
+  projectStack: ProjectStack
 }
 
 interface ProjectDialogProps {
@@ -61,12 +61,11 @@ export function ProjectDialog({
   project,
   onSave,
 }: ProjectDialogProps) {
-  const [mainImageFile, setMainImageFile] = React.useState<File | null>(null);
   const isEditMode = !!project
   const { getProjectById, addProject, updateProject } = useProjectStore()
   const [error, setError] = React.useState("")
   const [loading, setLoading] = React.useState(false)
-
+  const mainImageRef = React.useRef<File | null>(null);
   const [form, setForm] = React.useState<Project>({
     id: project?.id ?? 0,
     category: project?.category ?? "",
@@ -78,7 +77,7 @@ export function ProjectDialog({
     imgUrl: project?.imgUrl ?? "",
     projectImgs: project?.projectImgs ?? [],
     projectFeatures: project?.projectFeatures ?? [],
-    projectStacks: project?.projectStacks ?? [{ frontEnd: [], backEnd: [], dataBase: [] }],
+    projectStack: project?.projectStack ?? { frontEnd: [], backEnd: [], dataBase: [] },
   })
 
   React.useEffect(() => {
@@ -88,7 +87,7 @@ export function ProjectDialog({
       try {
         const data = await getProjectById(project.id)
         console.log(data)
-        if (data) setForm(data)
+        setForm(data)
       } catch (error) {
         console.error("Failed to fetch project:", error)
       } finally {
@@ -96,7 +95,7 @@ export function ProjectDialog({
       }
     }
     fetchProject()
-  }, [project?.id, isEditMode])
+  }, [project?.id, isEditMode, getProjectById]);
 
   const validateForm = () => {
     if (
@@ -115,35 +114,39 @@ export function ProjectDialog({
   }
 
   function convertToServiceProject(form: Project): import("@/services/ProjectService").Project {
+  const safeStack = form.projectStack || { frontEnd: [], backEnd: [], dataBase: [] }
+
   return {
     ...form,
-    projectImgs: form.projectImgs.map((img) =>
+    projectImgs: (form.projectImgs || []).map((img) =>
       typeof img === "string" ? img : URL.createObjectURL(img)
     ),
-    projectStacks: form.projectStacks.map((stackGroup) => ({
-      ...stackGroup,
-      frontEnd: stackGroup.frontEnd.map((item) => ({
+    projectStack: {
+      frontEnd: safeStack.frontEnd.map((item) => ({
         ...item,
         iconFile: undefined,
-        imageUrl: typeof item.iconFile === "string" ? item.iconFile : URL.createObjectURL(item.iconFile),
+        imageUrl: URL.createObjectURL(item.iconFile),
       })),
-      backEnd: stackGroup.backEnd.map((item) => ({
+      backEnd: safeStack.backEnd.map((item) => ({
         ...item,
         iconFile: undefined,
-        imageUrl: typeof item.iconFile === "string" ? item.iconFile : URL.createObjectURL(item.iconFile),
+        imageUrl: URL.createObjectURL(item.iconFile),
       })),
-      dataBase: stackGroup.dataBase.map((item) => ({
+      dataBase: safeStack.dataBase.map((item) => ({
         ...item,
         iconFile: undefined,
-        imageUrl: typeof item.iconFile === "string" ? item.iconFile : URL.createObjectURL(item.iconFile),
+        imageUrl: URL.createObjectURL(item.iconFile),
       })),
-    }))
+    }
   }
 }
 
 
 
+
+
   const handleSubmit = async () => {
+    console.log("FORM BEFORE SUBMIT", form);
   if (!validateForm()) return
   setLoading(true)
   try {
@@ -257,8 +260,11 @@ export function ProjectDialog({
                 <Input
                   type="file"
                   accept="image/*"
-                  onChange={(e) => setMainImageFile(e.target.files?.[0] || null)}
+                  onChange={(e) => {
+                    mainImageRef.current = e.target.files?.[0] || null;
+                  }}
                 />
+
               </div>
 
               <div className="space-y-2">
@@ -345,98 +351,99 @@ export function ProjectDialog({
     <Label className="text-lg font-semibold">Project Stacks</Label>
   </div>
 
-  {["frontEnd", "backEnd", "dataBase"].map((stackType) => (
-  <div key={stackType} className="space-y-3 border p-3 rounded-xl bg-gray-50">
-    <div className="flex items-center justify-between">
-      <h3 className="font-medium">
-        {stackType === "frontEnd"
-          ? "Frontend Stack"
-          : stackType === "backEnd"
-          ? "Backend Stack"
-          : "Database Stack"}
-      </h3>
+  {["frontEnd", "backEnd", "dataBase"].map((stackType) => {
+  const stackArray = form.projectStack?.[stackType] || [];
 
-      <Button
-        type="button"
-        variant="outline"
-        onClick={() => {
-          const updatedStacks = [...form.projectStacks]
-          if (updatedStacks.length === 0)
-            updatedStacks.push({
-              frontEnd: [],
-              backEnd: [],
-              dataBase: [],
-            })
-          updatedStacks[0][stackType].push({
-            iconFile: {} as File,
-            name: "",
-            projectTech: "",
-            imageUrl: "",
-          })
-          setForm({ ...form, projectStacks: updatedStacks })
-        }}
-        className="flex items-center bg-white gap-2"
-      >
-        <Plus size={16} /> Add Tech
-      </Button>
+  return (
+    <div key={stackType} className="space-y-3 border p-3 rounded-xl bg-gray-50">
+      <div className="flex items-center justify-between">
+        <h3 className="font-medium">
+          {stackType === "frontEnd"
+            ? "Frontend Stack"
+            : stackType === "backEnd"
+            ? "Backend Stack"
+            : "Database Stack"}
+        </h3>
+
+        <Button
+          type="button"
+          variant="outline"
+          onClick={() => {
+            const updatedStacks = {
+              ...form.projectStack,
+              [stackType]: [...stackArray, { iconFile: {} as File, name: "", projectTech: "", imageUrl: "" }],
+            };
+            setForm({ ...form, projectStack: updatedStacks });
+          }}
+          className="flex items-center bg-white gap-2"
+        >
+          <Plus size={16} /> Add Tech
+        </Button>
+      </div>
+
+      {stackArray.length > 0 ? (
+        stackArray.map((item, idx) => (
+          <div key={idx} className="relative border p-3 rounded-xl bg-white">
+            <button
+              type="button"
+              onClick={() => {
+                const updatedStacks = {
+                  ...form.projectStack,
+                  [stackType]: stackArray.filter((_item, i) => i !== idx),
+                };
+                setForm({ ...form, projectStack: updatedStacks });
+              }}
+              className="absolute top-2 right-2 text-red-500 hover:text-red-700"
+            >
+              <X size={16} />
+            </button>
+
+            <div className="space-y-2">
+              <Label>Technology Name</Label>
+              <Input
+                value={item.name}
+                onChange={(e) => {
+                  const updated = [...stackArray];
+                  updated[idx].name = e.target.value;
+                  setForm({
+                    ...form,
+                    projectStack: { ...form.projectStack, [stackType]: updated },
+                  });
+                }}
+                placeholder="e.g. React, Node.js"
+              />
+            </div>
+
+            <div className="space-y-2 mt-2">
+              <Label>Upload Icon</Label>
+              <Input
+                type="file"
+                accept="image/*"
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  if (!file) return;
+                  const updated = [...stackArray];
+                  updated[idx].iconFile = file;
+                  setForm({
+                    ...form,
+                    projectStack: { ...form.projectStack, [stackType]: updated },
+                  });
+                }}
+              />
+              {item.iconFile && (item.iconFile as File).name && (
+                <p className="text-xs text-gray-500 mt-1">
+                  Selected: {(item.iconFile as File).name}
+                </p>
+              )}
+            </div>
+          </div>
+        ))
+      ) : (
+        <p className="text-sm text-gray-500">No technologies added yet.</p>
+      )}
     </div>
-
-    {form.projectStacks[0]?.[stackType]?.length > 0 ? (
-      form.projectStacks[0][stackType].map((item, idx) => (
-        <div key={idx} className="relative border p-3 rounded-xl bg-white">
-          <button
-            type="button"
-            onClick={() => {
-              const updatedStacks = [...form.projectStacks]
-              updatedStacks[0][stackType] = updatedStacks[0][stackType].filter(
-                (_item, i) => i !== idx
-              )
-              setForm({ ...form, projectStacks: updatedStacks })
-            }}
-            className="absolute top-2 right-2 text-red-500 hover:text-red-700"
-          >
-            <X size={16} />
-          </button>
-
-          <div className="space-y-2">
-            <Label>Technology Name</Label>
-            <Input
-              value={item.name}
-              onChange={(e) => {
-                const updatedStacks = [...form.projectStacks]
-                updatedStacks[0][stackType][idx].name = e.target.value
-                setForm({ ...form, projectStacks: updatedStacks })
-              }}
-              placeholder="e.g. React, Node.js"
-            />
-          </div>
-
-          <div className="space-y-2 mt-2">
-            <Label>Upload Icon</Label>
-            <Input
-              type="file"
-              accept="image/*"
-              onChange={(e) => {
-                const file = e.target.files?.[0]
-                if (!file) return
-                const updatedStacks = [...form.projectStacks]
-                updatedStacks[0][stackType][idx].iconFile = file
-                setForm({ ...form, projectStacks: updatedStacks })
-              }}
-            />
-            {item.iconFile && (item.iconFile as File).name && (
-              <p className="text-xs text-gray-500 mt-1">
-                Selected: {(item.iconFile as File).name}
-              </p>
-            )}
-          </div>
-        </div>
-      ))
-    ) : (
-      <p className="text-sm text-gray-500">No technologies added yet.</p>
-    )}
-  </div>
-))}
+  );
+})}
 
 </div>
           

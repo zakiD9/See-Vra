@@ -15,17 +15,16 @@ export interface ProjectStack {
 
 interface offerndUsedProps{
   about:string;
-  used:ProjectStack[];
+  used:ProjectStack;
 }
 
 
-
 export default function OfferndUsed({ about, used }: offerndUsedProps) {
-  const allStacks = used.flatMap(stackGroup => [
-    ...stackGroup.frontEnd,
-    ...stackGroup.backEnd,
-    ...stackGroup.dataBase
-  ])
+  const allStacks = [
+    ...used.frontEnd,
+    ...used.backEnd,
+    ...used.dataBase
+  ]
 
   return (
     <div className="flex justify-between gap-10">
