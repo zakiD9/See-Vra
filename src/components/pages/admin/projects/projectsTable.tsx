@@ -44,7 +44,7 @@ export interface Project {
   imgUrl: string
   projectImgs: (string | File)[]
   projectFeatures: ProjectFeature[]
-  projectStacks: ProjectStacks
+  projectStacks: ProjectStacks[]
 }
 
 export default function ProjectsTable() {

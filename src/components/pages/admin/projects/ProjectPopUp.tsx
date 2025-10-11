@@ -45,7 +45,7 @@ export interface Project {
   imgUrl: string
   projectImgs: (string | File)[]
   projectFeatures: ProjectFeature[]
-  projectStacks: ProjectStacks
+  projectStacks: ProjectStacks[]
 }
 
 interface ProjectDialogProps {
@@ -77,7 +77,9 @@ export function ProjectDialog({
     imgUrl: project?.imgUrl ?? "",
     projectImgs: project?.projectImgs ?? [],
     projectFeatures: project?.projectFeatures ?? [],
-    projectStacks: project?.projectStacks ?? { frontEnd: [], backEnd: [], dataBase: [] },
+    projectStacks: project?.projectStacks?.length
+    ? [project.projectStacks[0]]
+    : [{ frontEnd: [], backEnd: [], dataBase: [] }],
   })
 
   React.useEffect(() => {
@@ -87,6 +89,7 @@ export function ProjectDialog({
       try {
         const data = await getProjectById(project.id)
         if (data) setForm(data)
+        console.log(data)
       } catch (error) {
         console.error("Failed to fetch project:", error)
       } finally {
@@ -113,39 +116,38 @@ export function ProjectDialog({
   }
 
   function convertToServiceProject(form: Project): import("@/services/ProjectService").Project {
-  const safeStack = form.projectStacks || { frontEnd: [], backEnd: [], dataBase: [] };
+  const firstStack = form.projectStacks?.[0] || { frontEnd: [], backEnd: [], dataBase: [] };
 
   return {
     ...form,
 
-    projectImgs: (form.projectImgs || []).map((img) =>
-      img instanceof File ? URL.createObjectURL(img) : typeof img === "string" ? img : ""
-    ).filter(Boolean),
+    projectImgs: (form.projectImgs || [])
+      .map((img) =>
+        img instanceof File ? URL.createObjectURL(img) : typeof img === "string" ? img : ""
+      )
+      .filter(Boolean),
 
-    projectStacks: {
-      frontEnd: (safeStack.frontEnd || []).map((item) => ({
-        ...item,
-        iconFile: undefined,
-        imageUrl: item.iconFile instanceof File ? URL.createObjectURL(item.iconFile) : item.imageUrl || "",
-      })),
-      backEnd: (safeStack.backEnd || []).map((item) => ({
-        ...item,
-        iconFile: undefined,
-        imageUrl: item.iconFile instanceof File ? URL.createObjectURL(item.iconFile) : item.imageUrl || "",
-      })),
-      dataBase: (safeStack.dataBase || []).map((item) => ({
-        ...item,
-        iconFile: undefined,
-        imageUrl: item.iconFile instanceof File ? URL.createObjectURL(item.iconFile) : item.imageUrl || "",
-      })),
-    }
+    projectStacks: [
+      {
+        frontEnd: (firstStack.frontEnd || []).map((item) => ({
+          ...item,
+          iconFile: undefined,
+          imageUrl: item.iconFile instanceof File ? URL.createObjectURL(item.iconFile) : item.imageUrl || "",
+        })),
+        backEnd: (firstStack.backEnd || []).map((item) => ({
+          ...item,
+          iconFile: undefined,
+          imageUrl: item.iconFile instanceof File ? URL.createObjectURL(item.iconFile) : item.imageUrl || "",
+        })),
+        dataBase: (firstStack.dataBase || []).map((item) => ({
+          ...item,
+          iconFile: undefined,
+          imageUrl: item.iconFile instanceof File ? URL.createObjectURL(item.iconFile) : item.imageUrl || "",
+        })),
+      },
+    ],
   };
 }
-
-
-
-
-
 
 
   const handleSubmit = async () => {
@@ -355,7 +357,8 @@ export function ProjectDialog({
   </div>
 
   {["frontEnd", "backEnd", "dataBase"].map((stackType) => {
-  const stackArray = form.projectStacks?.[stackType] || [];
+  const firstStack = form.projectStacks?.[0] || { frontEnd: [], backEnd: [], dataBase: [] };
+  const stackArray = firstStack?.[stackType as keyof ProjectStacks] || [];
 
   return (
     <div key={stackType} className="space-y-3 border p-3 rounded-xl bg-gray-50">
@@ -372,11 +375,14 @@ export function ProjectDialog({
           type="button"
           variant="outline"
           onClick={() => {
-            const updatedStacks = {
-              ...form.projectStacks,
+            const updatedStack = {
+              ...firstStack,
               [stackType]: [...stackArray, { iconFile: {} as File, name: "", projectTech: "", imageUrl: "" }],
             };
-            setForm({ ...form, projectStacks: updatedStacks });
+            setForm({
+              ...form,
+              projectStacks: [updatedStack], // always keep as array
+            });
           }}
           className="flex items-center bg-white gap-2"
         >
@@ -390,11 +396,14 @@ export function ProjectDialog({
             <button
               type="button"
               onClick={() => {
-                const updatedStacks = {
-                  ...form.projectStacks,
+                const updatedStack = {
+                  ...firstStack,
                   [stackType]: stackArray.filter((_item, i) => i !== idx),
                 };
-                setForm({ ...form, projectStacks: updatedStacks });
+                setForm({
+                  ...form,
+                  projectStacks: [updatedStack],
+                });
               }}
               className="absolute top-2 right-2 text-red-500 hover:text-red-700"
             >
@@ -406,12 +415,10 @@ export function ProjectDialog({
               <Input
                 value={item.name}
                 onChange={(e) => {
-                  const updated = [...stackArray];
-                  updated[idx].name = e.target.value;
-                  setForm({
-                    ...form,
-                    projectStacks: { ...form.projectStacks, [stackType]: updated },
-                  });
+                  const updatedArray = [...stackArray];
+                  updatedArray[idx].name = e.target.value;
+                  const updatedStack = { ...firstStack, [stackType]: updatedArray };
+                  setForm({ ...form, projectStacks: [updatedStack] });
                 }}
                 placeholder="e.g. React, Node.js"
               />
@@ -425,12 +432,10 @@ export function ProjectDialog({
                 onChange={(e) => {
                   const file = e.target.files?.[0];
                   if (!file) return;
-                  const updated = [...stackArray];
-                  updated[idx].iconFile = file;
-                  setForm({
-                    ...form,
-                    projectStacks: { ...form.projectStacks, [stackType]: updated },
-                  });
+                  const updatedArray = [...stackArray];
+                  updatedArray[idx].iconFile = file;
+                  const updatedStack = { ...firstStack, [stackType]: updatedArray };
+                  setForm({ ...form, projectStacks: [updatedStack] });
                 }}
               />
               {item.iconFile && (item.iconFile as File).name && (
@@ -447,6 +452,8 @@ export function ProjectDialog({
     </div>
   );
 })}
+
+
 
 </div>
           
