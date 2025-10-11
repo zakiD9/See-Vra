@@ -8,7 +8,6 @@ import { useProjectStore } from "@/stores/ProjectStore";
 const ProjectDetails = lazy(() => import("@/components/pages/project/ProjectDetails"));
 const ProjectPics = lazy(() => import("@/components/pages/project/ProjectPics"));
 const OfferndUsed = lazy(() => import("@/components/pages/project/OfferndUsed"));
-const About = lazy(() => import("@/components/pages/project/projecttabs/about"));
 
 
 
@@ -38,7 +37,7 @@ export default function ProjectPage(){
             <div className="container mx-auto px-4 flex flex-col gap-10">
             <Suspense fallback={<div>Loading project...</div>}>
             <ProjectDetails figmaLink={project.uiUxLink} mainImage={project.imgUrl} projectTitle={project.title} seeAllLink={project.about} />
-            <ReusableTabs tabs={project.projectFeatures} />
+            <ReusableTabs tabs={project.projectFeatures || []} />
             <ProjectPics githubLink={project.githubLink} projectImgs={project.projectImgs}  />
             <OfferndUsed about={project.about} used={project.projectStacks} />
             </Suspense>

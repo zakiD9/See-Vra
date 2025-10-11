@@ -7,7 +7,7 @@ export interface Stack {
   imageUrl:string;
 }
 
-export interface ProjectStack {
+export interface ProjectStacks {
   frontEnd: Stack[]
   backEnd: Stack[]
   dataBase: Stack[]
@@ -15,15 +15,19 @@ export interface ProjectStack {
 
 interface offerndUsedProps{
   about:string;
-  used:ProjectStack;
+  used:ProjectStacks;
 }
 
 
 export default function OfferndUsed({ about, used }: offerndUsedProps) {
+  const frontEnd = used?.frontEnd || [];
+  const backEnd = used?.backEnd || [];
+  const dataBase = used?.dataBase || [];
+  
   const allStacks = [
-    ...used.frontEnd,
-    ...used.backEnd,
-    ...used.dataBase
+    ...frontEnd,
+    ...backEnd,
+    ...dataBase
   ]
 
   return (

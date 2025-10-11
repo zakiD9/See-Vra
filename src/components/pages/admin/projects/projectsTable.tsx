@@ -27,7 +27,7 @@ export interface Stack{
   imageUrl:string;
 }
 
-export interface ProjectStack {
+export interface ProjectStacks {
   frontEnd: Stack[]
   backEnd: Stack[]
   dataBase: Stack[]
@@ -44,7 +44,7 @@ export interface Project {
   imgUrl: string
   projectImgs: (string | File)[]
   projectFeatures: ProjectFeature[]
-  projectStack: ProjectStack
+  projectStacks: ProjectStacks
 }
 
 export default function ProjectsTable() {

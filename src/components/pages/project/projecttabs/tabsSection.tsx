@@ -19,6 +19,10 @@ interface ReusableTabsProps {
 }
 
 export function ReusableTabs({ tabs, defaultTab }: ReusableTabsProps) {
+  if (!tabs || tabs.length === 0) {
+    return <p className="text-gray-400">No features available.</p>
+  }
+
   return (
     <Tabs defaultValue={defaultTab || tabs[0].feature} className="w-full">
       <TabsList className="w-full justify-start border-b border-gray-600 bg-transparent rounded-none">
@@ -41,3 +45,4 @@ export function ReusableTabs({ tabs, defaultTab }: ReusableTabsProps) {
     </Tabs>
   )
 }
+
