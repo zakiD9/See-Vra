@@ -21,10 +21,10 @@ export default function ContactForm() {
   const { addRequest, loading } = useRequestStore()
 
   const [form, setForm] = useState<ContactRequest>({
-    fullName: "",
+    company: "",
     service: "",
     email: "",
-    phoneNumber: "",
+    phone: "",
     description: "",
   })
 
@@ -36,9 +36,9 @@ export default function ContactForm() {
     e.preventDefault()
 
     if (
-      !form.fullName ||
+      !form.company ||
       !form.email ||
-      !form.phoneNumber ||
+      !form.phone ||
       !form.service ||
       !form.description
     ) {
@@ -50,10 +50,10 @@ export default function ContactForm() {
       await addRequest(form)
       alert(t("contactForm.success") || "Your message has been sent!")
       setForm({
-        fullName: "",
+        company: "",
         service: "",
         email: "",
-        phoneNumber: "",
+        phone: "",
         description: "",
       })
     } catch {
@@ -88,8 +88,8 @@ export default function ContactForm() {
         <Input
           className="py-5"
           placeholder={t("contactForm.company")}
-          value={form.fullName}
-          onChange={(e) => handleChange("fullName", e.target.value)}
+          value={form.company}
+          onChange={(e) => handleChange("company", e.target.value)}
         />
 
         <Input
@@ -103,8 +103,8 @@ export default function ContactForm() {
         <Input
           className="py-5"
           placeholder={t("contactForm.phone")}
-          value={form.phoneNumber}
-          onChange={(e) => handleChange("phoneNumber", e.target.value)}
+          value={form.phone}
+          onChange={(e) => handleChange("phone", e.target.value)}
         />
       </div>
 

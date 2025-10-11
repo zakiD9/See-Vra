@@ -46,9 +46,9 @@ export function DemandsTable() {
             requests.map((req) => (
               <TableRow key={req.id} className="hover:bg-gray-50">
                 <TableCell>{req.id}</TableCell>
-                <TableCell>{req.fullName}</TableCell>
+                <TableCell>{req.company}</TableCell>
                 <TableCell>{req.email}</TableCell>
-                <TableCell>{req.phoneNumber}</TableCell>
+                <TableCell>{req.phone}</TableCell>
                 <TableCell>{req.service}</TableCell>
                 <TableCell className="max-w-xs truncate">
                   {req.description}
@@ -61,7 +61,6 @@ export function DemandsTable() {
                         setSelected(req)
                       }}
                     />
-                    {/* <DeleteButton /> */}
                   </div>
                 </TableCell>
               </TableRow>
