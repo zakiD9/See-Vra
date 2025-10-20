@@ -3,27 +3,19 @@
 export interface Stack {
   iconFile:File;
   name:string;
-  projectTech:string;
   imageUrl:string;
 }
-
-export interface ProjectStacks {
-  frontEnd: Stack[]
-  backEnd: Stack[]
-  dataBase: Stack[]
-}
-
 interface offerndUsedProps{
   about:string;
-  used:ProjectStacks;
+  used:Stack[][];
 }
 
 
 export default function OfferndUsed({ about, used }: offerndUsedProps) {
-  const frontEnd = used?.frontEnd || [];
-  const backEnd = used?.backEnd || [];
-  const dataBase = used?.dataBase || [];
-  
+  const frontEnd = used?.[0] || [];
+  const backEnd = used?.[1] || [];
+  const dataBase = used?.[2] || [];
+
   const allStacks = [
     ...frontEnd,
     ...backEnd,

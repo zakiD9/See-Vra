@@ -39,7 +39,7 @@ export default function ProjectPage(){
             <ProjectDetails figmaLink={project.uiUxLink} mainImage={project.imgUrl} projectTitle={project.title} seeAllLink={project.about} />
             <ReusableTabs tabs={project.projectFeatures || []} />
             <ProjectPics githubLink={project.githubLink} projectImgs={project.projectImgs}  />
-            <OfferndUsed about={project.about} used={project.projectStacks} />
+            <OfferndUsed about={project.about} used={[project.frontEnd,project.backEnd,project.dataBase]} />
             </Suspense>
             </div>
             </main>

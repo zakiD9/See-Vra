@@ -24,8 +24,13 @@ export interface ProjectFeature {
 export interface Stack{
   iconFile:File;
   name:string;
-  projectTech:string;
   imageUrl:string;
+}
+export interface ResponseStack{
+  id:number
+  iconUrl:string | File
+  name:string
+  typeStack:number
 }
 
 export interface ProjectStacks {
@@ -45,7 +50,10 @@ export interface Project {
   imgUrl: string
   projectImgs: (string | File)[]
   projectFeatures: ProjectFeature[]
-  projectStacks: ProjectStacks[]
+  frontEnd: Stack[]
+  backEnd: Stack[]
+  dataBase: Stack[]
+  projectStacks?: ResponseStack[]
 }
 
 interface ProjectDialogProps {
@@ -54,6 +62,7 @@ interface ProjectDialogProps {
   project?: Project | null
   onSave?: (project: Project) => void
 }
+
 
 export function ProjectDialog({
   open,
@@ -77,9 +86,9 @@ export function ProjectDialog({
     imgUrl: project?.imgUrl ?? "",
     projectImgs: project?.projectImgs ?? [],
     projectFeatures: project?.projectFeatures ?? [],
-    projectStacks: project?.projectStacks?.length
-    ? [project.projectStacks[0]]
-    : [{ frontEnd: [], backEnd: [], dataBase: [] }],
+    frontEnd: project?.frontEnd ?? [],
+    backEnd: project?.backEnd ?? [],
+    dataBase: project?.dataBase ?? [],
   })
 
   React.useEffect(() => {
@@ -115,47 +124,13 @@ export function ProjectDialog({
     return true
   }
 
-  function convertToServiceProject(form: Project): import("@/services/ProjectService").Project {
-  const firstStack = form.projectStacks?.[0] || { frontEnd: [], backEnd: [], dataBase: [] };
-
-  return {
-    ...form,
-
-    projectImgs: (form.projectImgs || [])
-      .map((img) =>
-        img instanceof File ? URL.createObjectURL(img) : typeof img === "string" ? img : ""
-      )
-      .filter(Boolean),
-
-    projectStacks: [
-      {
-        frontEnd: (firstStack.frontEnd || []).map((item) => ({
-          ...item,
-          iconFile: undefined,
-          imageUrl: item.iconFile instanceof File ? URL.createObjectURL(item.iconFile) : item.imageUrl || "",
-        })),
-        backEnd: (firstStack.backEnd || []).map((item) => ({
-          ...item,
-          iconFile: undefined,
-          imageUrl: item.iconFile instanceof File ? URL.createObjectURL(item.iconFile) : item.imageUrl || "",
-        })),
-        dataBase: (firstStack.dataBase || []).map((item) => ({
-          ...item,
-          iconFile: undefined,
-          imageUrl: item.iconFile instanceof File ? URL.createObjectURL(item.iconFile) : item.imageUrl || "",
-        })),
-      },
-    ],
-  };
-}
-
 
   const handleSubmit = async () => {
     console.log("FORM BEFORE SUBMIT", form);
   if (!validateForm()) return
   setLoading(true)
   try {
-    const payload = convertToServiceProject(form)
+    const payload = form
 
     if (isEditMode && project?.id) {
       await updateProject(project.id, payload)
@@ -356,9 +331,8 @@ export function ProjectDialog({
     <Label className="text-lg font-semibold">Project Stacks</Label>
   </div>
 
-  {["frontEnd", "backEnd", "dataBase"].map((stackType) => {
-  const firstStack = form.projectStacks?.[0] || { frontEnd: [], backEnd: [], dataBase: [] };
-  const stackArray = firstStack?.[stackType as keyof ProjectStacks] || [];
+  {(["frontEnd", "backEnd", "dataBase"] as const).map((stackType) => {
+  const stackArray = form[stackType] || [];
 
   return (
     <div key={stackType} className="space-y-3 border p-3 rounded-xl bg-gray-50">
@@ -375,13 +349,9 @@ export function ProjectDialog({
           type="button"
           variant="outline"
           onClick={() => {
-            const updatedStack = {
-              ...firstStack,
-              [stackType]: [...stackArray, { iconFile: {} as File, name: "", projectTech: "", imageUrl: "" }],
-            };
             setForm({
               ...form,
-              projectStacks: [updatedStack], // always keep as array
+              [stackType]: [...stackArray, { iconFile: {} as File, name: "", imageUrl: "" }],
             });
           }}
           className="flex items-center bg-white gap-2"
@@ -396,13 +366,9 @@ export function ProjectDialog({
             <button
               type="button"
               onClick={() => {
-                const updatedStack = {
-                  ...firstStack,
-                  [stackType]: stackArray.filter((_item, i) => i !== idx),
-                };
                 setForm({
                   ...form,
-                  projectStacks: [updatedStack],
+                  [stackType]: stackArray.filter((_item, i) => i !== idx),
                 });
               }}
               className="absolute top-2 right-2 text-red-500 hover:text-red-700"
@@ -417,8 +383,7 @@ export function ProjectDialog({
                 onChange={(e) => {
                   const updatedArray = [...stackArray];
                   updatedArray[idx].name = e.target.value;
-                  const updatedStack = { ...firstStack, [stackType]: updatedArray };
-                  setForm({ ...form, projectStacks: [updatedStack] });
+                  setForm({ ...form, [stackType]: updatedArray });
                 }}
                 placeholder="e.g. React, Node.js"
               />
@@ -434,8 +399,7 @@ export function ProjectDialog({
                   if (!file) return;
                   const updatedArray = [...stackArray];
                   updatedArray[idx].iconFile = file;
-                  const updatedStack = { ...firstStack, [stackType]: updatedArray };
-                  setForm({ ...form, projectStacks: [updatedStack] });
+                  setForm({ ...form, [stackType]: updatedArray });
                 }}
               />
               {item.iconFile && (item.iconFile as File).name && (
@@ -452,6 +416,7 @@ export function ProjectDialog({
     </div>
   );
 })}
+
 
 
 

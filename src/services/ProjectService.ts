@@ -8,8 +8,13 @@ export interface ProjectFeature {
 export interface Stack{
   iconFile:File;
   name:string;
-  projectTech:string;
   imageUrl:string;
+}
+export interface ResponseStack{
+  id:number
+  iconUrl:string | File
+  name:string
+  typeStack:number
 }
 
 export interface ProjectStacks {
@@ -29,7 +34,10 @@ export interface Project {
   imgUrl: string
   projectImgs: (string | File)[]
   projectFeatures: ProjectFeature[]
-  projectStacks: ProjectStacks[]
+  projectStacks?: ResponseStack[]
+  frontEnd: Stack[]
+  backEnd: Stack[]
+  dataBase: Stack[]
 }
 
 
@@ -59,24 +67,27 @@ export const ProjectService = {
     formData.append(`ProjectFeatures[${index}].Description`, feature.description)
   })
 
-payload.projectStacks[0].frontEnd.forEach((item, j) => {
-  formData.append(`ProjectStack[0].FrontEnd[${j}].name`, item.name)
+payload.frontEnd.forEach((item, j) => {
+  formData.append(`FrontEnd[${j}].name`, item.name)
+  formData.append(`FrontEnd[${j}].imageUrl`, item.imageUrl)
   if (item.iconFile instanceof File) {
-    formData.append(`ProjectStack[0].FrontEnd[${j}].icon`, item.iconFile)
+    formData.append(`FrontEnd[${j}].iconFile`, item.iconFile)
   }
 })
 
-payload.projectStacks[0].backEnd.forEach((item, j) => {
-  formData.append(`ProjectStack[0].BackEnd[${j}].name`, item.name)
+payload.backEnd.forEach((item, j) => {
+  formData.append(`BackEnd[${j}].name`, item.name)
+  formData.append(`BackEnd[${j}].imageUrl`, item.imageUrl)
   if (item.iconFile instanceof File) {
-    formData.append(`ProjectStack[0].BackEnd[${j}].icon`, item.iconFile)
+    formData.append(`BackEnd[${j}].iconFile`, item.iconFile)
   }
 })
 
-payload.projectStacks[0].dataBase.forEach((item, j) => {
-  formData.append(`ProjectStack[0].DataBase[${j}].name`, item.name)
+payload.dataBase.forEach((item, j) => {
+  formData.append(`DataBase[${j}].name`, item.name)
+  formData.append(`DataBase[${j}].imageUrl`, item.imageUrl)
   if (item.iconFile instanceof File) {
-    formData.append(`ProjectStack[0].DataBase[${j}].icon`, item.iconFile)
+    formData.append(`DataBase[${j}].iconFile`, item.iconFile)
   }
 })
 
@@ -103,26 +114,30 @@ payload.projectStacks[0].dataBase.forEach((item, j) => {
   })
 
   
-payload.projectStacks[0].frontEnd.forEach((item, j) => {
-  formData.append(`ProjectStack[0].FrontEnd[${j}].name`, item.name)
+payload.frontEnd.forEach((item, j) => {
+  formData.append(`FrontEnd[${j}].name`, item.name)
+  formData.append(`FrontEnd[${j}].imageUrl`, item.imageUrl)
   if (item.iconFile instanceof File) {
-    formData.append(`ProjectStack[0].FrontEnd[${j}].icon`, item.iconFile)
+    formData.append(`FrontEnd[${j}].iconFile`, item.iconFile)
   }
 })
 
-payload.projectStacks[0].backEnd.forEach((item, j) => {
-  formData.append(`ProjectStack[0].BackEnd[${j}].name`, item.name)
+payload.backEnd.forEach((item, j) => {
+  formData.append(`BackEnd[${j}].name`, item.name)
+  formData.append(`BackEnd[${j}].imageUrl`, item.imageUrl)
   if (item.iconFile instanceof File) {
-    formData.append(`ProjectStack[0].BackEnd[${j}].icon`, item.iconFile)
+    formData.append(`BackEnd[${j}].iconFile`, item.iconFile)
   }
 })
 
-payload.projectStacks[0].dataBase.forEach((item, j) => {
-  formData.append(`ProjectStack[0].DataBase[${j}].name`, item.name)
+payload.dataBase.forEach((item, j) => {
+  formData.append(`DataBase[${j}].name`, item.name)
+  formData.append(`DataBase[${j}].imageUrl`, item.imageUrl)
   if (item.iconFile instanceof File) {
-    formData.append(`ProjectStack[0].DataBase[${j}].icon`, item.iconFile)
+    formData.append(`DataBase[${j}].iconFile`, item.iconFile)
   }
 })
+
 
   const response = await api.patch(`/Project/${id}`, formData, {
     headers: { "Content-Type": "multipart/form-data" },
