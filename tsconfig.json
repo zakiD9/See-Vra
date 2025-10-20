@@ -7,10 +7,12 @@
       "@/*": ["./src/*"]
     },
     "types": ["node", "vite/client"],
-    "jsx": "react-jsx",           
-    "moduleResolution": "node",   
+    "jsx": "react-jsx",
+    "moduleResolution": "node",
     "esModuleInterop": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "module": "ESNext",
+    "target": "ESNext"
   },
   "include": ["src"]
 }
