@@ -20,7 +20,7 @@ export default function ServicesSection() {
 
       <motion.div
         layout
-    className={`grid md:grid-cols-3 px-32 md:px-0 w-full transition-all duration-500 ease-in-out 
+    className={`grid md:grid-cols-3 px-10 md:px-0 w-full transition-all duration-500 ease-in-out 
     ${selectedService ? "gap-5" : "md:gap-5 lg:gap-20 gap-20"}`}
         >
          {selectedService ? (

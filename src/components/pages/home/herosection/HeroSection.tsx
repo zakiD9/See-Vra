@@ -11,7 +11,7 @@ export default function HeroSection(){
   const {t}=useTranslation();
 
     return(
-        <div className="relative mx-5 sm:py-5 w-full items-center py-20 px-10 flex justify-between rounded-lg overflow-hidden">
+        <div className="relative sm:py-5 w-full items-center py-20 px-10 flex justify-between rounded-lg overflow-hidden">
       <video
         autoPlay
         loop

@@ -12,13 +12,23 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { services } from "@/data/services"
 import { useRequestStore } from "@/stores/RequestStore"
 import type { ContactRequest } from "@/services/RequestService"
 
 export default function ContactForm() {
   const { t } = useTranslation()
   const { addRequest, loading } = useRequestStore()
+  const types = [
+    { id: 1, name: t("siderbarTypes.eLearning"),},
+    { id: 2, name: t("siderbarTypes.eCommerce"),},
+    { id: 3, name: t("siderbarTypes.saas"),},
+    { id: 4, name: t("siderbarTypes.erp"),},
+    { id: 5, name: t("siderbarTypes.crm"),},
+    { id: 6, name: t("siderbarTypes.healthcare"),},
+    { id: 7, name: t("siderbarTypes.crossPlatform"),},
+    { id: 8, name: t("siderbarTypes.androidMobile"),},
+    { id: 9, name: t("siderbarTypes.others"),},
+  ];
 
   const [form, setForm] = useState<ContactRequest>({
     company: "",
@@ -73,13 +83,13 @@ export default function ContactForm() {
           value={form.service}
           onValueChange={(value) => handleChange("service", value)}
         >
-          <SelectTrigger className="py-5">
+          <SelectTrigger className="py-5 border-[#146CF2]">
             <SelectValue placeholder={t("contactForm.chooseService")} />
           </SelectTrigger>
           <SelectContent>
-            {services.map((service) => (
-              <SelectItem key={service.id} value={service.serviceName}>
-                {t(service.serviceName)}
+            {types.map((service) => (
+              <SelectItem key={service.id} value={service.name}>
+                {t(service.name)}
               </SelectItem>
             ))}
           </SelectContent>

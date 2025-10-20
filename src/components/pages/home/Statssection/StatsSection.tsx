@@ -41,7 +41,7 @@ export default function Stats(){
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 1 }}
         viewport={{ once: true }}
-         className="grid grid-cols-1 mx-32 md:mx-0 md:grid-cols-2 lg:grid-cols-4 gap-14 grid-rows-1">
+         className="grid grid-cols-1 mx-10 md:mx-0 md:grid-cols-2 lg:grid-cols-4 gap-14 grid-rows-1">
             {stats.map((stat)=>(<StatsCard key={stat.id} logo={<stat.icon className="h-20 w-20 xl:w-32 xl:h-32" color={stat.color} />} serviceName={stat.title} value={stat.value}/>))}
         </motion.div>
     )

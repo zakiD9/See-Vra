@@ -9,6 +9,14 @@ import {
   DialogDescription,
   DialogFooter,
 } from "@/components/ui/dialog"
+
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 import Button from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -90,6 +98,18 @@ export function ProjectDialog({
     backEnd: project?.backEnd ?? [],
     dataBase: project?.dataBase ?? [],
   })
+
+  const types = [
+    { id: 1, name: "eLearning"},
+    { id: 2, name: "eCommerce"},
+    { id: 3, name: "saas"},
+    { id: 4, name: "erp"},
+    { id: 5, name: "crm"},
+    { id: 6, name: "healthcare"},
+    { id: 7, name: "crossPlatform"},
+    { id: 8, name: "androidMobile"},
+    { id: 9, name: "others"},
+  ];
 
   React.useEffect(() => {
     const fetchProject = async () => {
@@ -174,11 +194,21 @@ export function ProjectDialog({
 
               <div className="space-y-2">
                 <Label>Category</Label>
-                <Input
-                  value={form.category}
-                  onChange={(e) => setForm({ ...form, category: e.target.value })}
-                  placeholder="e.g. Web App"
-                />
+                <Select
+          value={form.category}
+          onValueChange={(value) => setForm({ ...form, category: value })}
+        >
+          <SelectTrigger className="py-5 border-[#146CF2]">
+            <SelectValue placeholder="enter the service" />
+          </SelectTrigger>
+          <SelectContent>
+            {types.map((service) => (
+              <SelectItem key={service.id} value={service.name}>
+                {service.name}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
               </div>
 
               <div className="space-y-2">
