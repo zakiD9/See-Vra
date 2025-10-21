@@ -23,8 +23,13 @@ export interface ProjectFeature {
 export interface Stack{
   iconFile:File;
   name:string;
-  projectTech:string;
   imageUrl:string;
+}
+export interface ResponseStack{
+  id:number
+  iconUrl:string | File
+  name:string
+  typeStack:number
 }
 
 export interface ProjectStacks {
@@ -44,7 +49,10 @@ export interface Project {
   imgUrl: string
   projectImgs: (string | File)[]
   projectFeatures: ProjectFeature[]
-  projectStacks: ProjectStacks[]
+  frontEnd: Stack[]
+  backEnd: Stack[]
+  dataBase: Stack[]
+  projectStacks?: ResponseStack[]
 }
 
 export default function ProjectsTable() {
