@@ -27,7 +27,7 @@ export default function HeroSection(){
       <div className="absolute top-0 left-0 w-full h-full bg-black/10 z-10" />
 
       <div className="relative flex md:justify-between text-center md:test-start w-full items-center z-20">
-        <div className="flex flex-col items-center md:items-start gap-16">
+        <div className="flex flex-col items-center md:items-start gap-5 md:gap-16">
           <div className="flex flex-col gap-5">
             <h1 className="text-[#146CF2] text-5xl">{t("hero.title1")}</h1>
             <h1 className="text-4xl text-white">{t("hero.title2")}</h1>
