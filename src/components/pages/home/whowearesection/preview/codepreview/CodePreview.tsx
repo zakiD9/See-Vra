@@ -25,23 +25,23 @@ export default function CodePreview() {
     <div className="flex flex-col px-2 gap-1">
       <div className="flex gap-2 items-center">
         <span className="text-[#028192] text-xs">HTTP</span>
-        <span className="text-sm">
+        <span className=",d:text-sm text-xs">
           REST API basics: CRUD, test & variable / https://api.openai.com/v1/completions
         </span>
       </div>
 
       <Request isSending={isSending} setIsSending={setIsSending} />
 
-      <div className="p-2 flex items-center justify-between w-8/12">
-        <span className="text-sm text-gray-500">Params</span>
-        <span className="text-sm text-gray-500">Authorization</span>
-        <span className="text-sm border-b border-orange-400 px-1">
-          Headers <span className="text-[#028192]">(11)</span>
+      <div className="p-1 gap-1 flex items-center justify-between w-8/12">
+        <span className="md:text-sm text-xs text-gray-500">Params</span>
+        <span className="md:text-sm text-xs text-gray-500">Authorization</span>
+        <span className="md:text-sm text-xs border-b border-orange-400 px-1">
+          Headers <span className="text-[#028192] hidden md:block ">(11)</span>
         </span>
-        <span className="text-sm text-gray-500">Body</span>
-        <span className="text-sm text-gray-500">Scripts</span>
-        <span className="text-sm text-gray-500">Tests</span>
-        <span className="text-sm text-gray-500">Settings</span>
+        <span className="md:text-sm text-xs text-gray-500">Body</span>
+        <span className="md:text-sm text-xs text-gray-500">Scripts</span>
+        <span className="md:text-sm text-xs text-gray-500">Tests</span>
+        <span className="md:text-sm text-xs text-gray-500">Settings</span>
       </div>
 
       <hr className="border-t-2 my-3" />
@@ -60,16 +60,16 @@ export default function CodePreview() {
           <tbody>
             {data.map((item, idx) => (
               <tr key={idx} className="border-b last:border-0">
-                <td className="px-4 py-2 font-mono border text-red-500">
+                <td className="md:px-4 px-1 py-2 font-mono border text-red-500">
                   <Checkbox />
                 </td>
-                <td className="px-4 py-2 font-mono border text-red-500">
+                <td className="md:px-4 px-1 py-2 font-mono border text-red-500">
                   "{item.key}"
                 </td>
-                <td className="px-4 py-2 font-mono border text-green-600">
+                <td className="md:px-4 px-1 py-2 font-mono border text-green-600">
                   "{item.value}"
                 </td>
-                <td className="px-4 py-2 border text-gray-600">{item.description}</td>
+                <td className="md:px-4 px-1 py-2 border text-gray-600">{item.description}</td>
               </tr>
             ))}
           </tbody>
@@ -80,10 +80,10 @@ export default function CodePreview() {
         <div className="gap-5 flex items-center">
           <span className="text-black py-1 my-1 text-xs md:text-sm border-b">body</span>
           <span className="text-xs md:text-sm">
-            Cookies <span className="text-green-500">(2)</span>
+            Cookies <span className="text-green-500 hidden md:block">(2)</span>
           </span>
           <span className="text-xs md:text-sm">
-            Headers <span className="text-green-500">(20)</span>
+            Headers <span className="text-green-500 hidden md:block">(20)</span>
           </span>
           <span className="text-xs md:text-sm">Test Results</span>
         </div>
@@ -97,18 +97,18 @@ export default function CodePreview() {
         </div>
       </div>
 
-      <div className="bg-white flex px-1 gap-5 mt-3">
-        <div className="py-2 px-2 gap-7 flex items-center rounded-md bg-gray-100">
+      <div className="bg-white flex px-1 md:gap-5 gap-1 mt-3">
+        <div className="py-2 px-2 gap-7 text-xs md:text-md flex items-center rounded-md bg-gray-100">
           <span className="text-black">Pretty</span>
           <span className="text-gray-500">Raw</span>
           <span className="text-gray-500">Preview</span>
           <span className="text-gray-500">Visualize</span>
         </div>
         <div className="flex gap-2 items-center p-2 rounded-md bg-gray-100">
-          <span className="text-gray-500">JSON</span>
+          <span className="text-gray-500 text-xs md:text-md">JSON</span>
           <ArrowDown size={20} color="gray" />
         </div>
-        <div className="flex gap-2 items-center p-2 rounded-md bg-gray-100">
+        <div className="md:flex gap-2 hidden items-center p-2 rounded-md bg-gray-100">
           <Underline size={22} color="red" />
         </div>
       </div>

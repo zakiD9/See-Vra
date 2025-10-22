@@ -30,27 +30,27 @@ import React from "react";
               ➤
             </button>
           </div>
-          <div className="flex flex-col gap-4">
-          <div className="flex gap-4">
-            <Facebook size={30}/>
-            <Youtube size={30}/>
-            <PhoneCall size={30}/>
-            <Instagram size={30}/>
-            <Twitter size={30}/>
+          <div className="flex flex-col gap-2 md:gap-4">
+          <div className="flex gap-2 md:gap-4">
+            <Facebook size={25}/>
+            <Youtube size={25}/>
+            <PhoneCall size={25}/>
+            <Instagram size={25}/>
+            <Twitter size={25}/>
           </div>
         </div>
             </div> 
       <div className="flex md:grid-cols-4 w-full gap-10 items-start">
         <div className="flex flex-col gap-6 w-1/3 ml-5 pt-32">
-          <h1 className="text-4xl lg:text-5xl font-semibold">{t("footer.title")}</h1>
+          <h1 className="text-3xl lg:text-5xl font-semibold">{t("footer.title")}</h1>
         </div>
         <div className="w-1/3 h-fit">
           <SideBar isFooter={true} types={types} />
         </div>
         <div className="flex flex-col gap-5 w-1/3">
           <h2 className="text-[#146CF2] text-xl font-medium mb-4">{t("footer.contact")}</h2>
-          <p className="text-lg">+552030681</p>
-          <p className="text-lg">info@see-vra.com</p>
+          <p className="md:text-lg">+552030681</p>
+          <p className="md:text-lg">info@see-vra.com</p>
         </div>
       </div>
 
