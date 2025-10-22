@@ -15,8 +15,7 @@ export default function HomePage() {
       <NavBar />
 
       <main className="flex flex-col gap-10 w-full">
-        {/* 🖥️ Desktop container */}
-        <div className="container mx-auto px-4 flex flex-col gap-10 hidden md:flex">
+        <div className="container mx-auto px-4 flex-col gap-10 hidden md:flex">
           <Suspense fallback={<div>Loading...</div>}>
             <section id="home"><HeroSection /></section>
             <section id="about"><WhoWeAreSection /></section>
@@ -27,7 +26,6 @@ export default function HomePage() {
           </Suspense>
         </div>
 
-        {/* 📱 Mobile container */}
         <div className="px-3 flex flex-col gap-6 md:hidden">
           <Suspense fallback={<div>Loading...</div>}>
             <section id="home"><HeroSection /></section>
