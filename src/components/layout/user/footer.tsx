@@ -15,6 +15,7 @@ import {
 import SideBar from "../../pages/home/projectssection/SideBar";
 import { useTranslation } from "react-i18next";
 import React from "react";
+import LanguageSwitcher from "./header/LanguageDropdown";
 
 function Footer() {
   const { t } = useTranslation();
@@ -66,6 +67,9 @@ function Footer() {
             <h2 className="text-[#146CF2] text-xl font-medium">{t("footer.contact")}</h2>
             <p className="md:text-lg">+552030681</p>
             <p className="md:text-lg">info@see-vra.com</p>
+          </div>
+          <div className="flex justify-center md:hidden">
+          <LanguageSwitcher />
           </div>
         </div>
 
