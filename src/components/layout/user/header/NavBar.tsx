@@ -1,20 +1,24 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import LanguageSwitcher from "./LanguageDropdown";
-import { Briefcase, Home, Info, Mail, Users, Wrench } from "lucide-react";
+import {
+  Briefcase,
+  Home,
+  Info,
+  Mail,
+  Users,
+  Wrench,
+  Menu,
+  X,
+} from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 function NavBar() {
-  const [showMobileNav, setShowMobileNav] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { t } = useTranslation();
   const location = useLocation();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const timer = setTimeout(() => setShowMobileNav(true), 100);
-    return () => clearTimeout(timer);
-  }, []);
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 0);
@@ -23,6 +27,7 @@ function NavBar() {
   }, []);
 
   const handleNavClick = (sectionId: string) => {
+    setMobileMenuOpen(false);
     if (location.pathname !== "/") {
       navigate(`/#${sectionId}`);
       setTimeout(() => {
@@ -52,44 +57,95 @@ function NavBar() {
         <span onClick={() => handleNavClick("home")} className="cursor-pointer">
           {t("nav.home")}
         </span>
-        <span onClick={() => handleNavClick("about")} className="cursor-pointer">
+        <span
+          onClick={() => handleNavClick("about")}
+          className="cursor-pointer"
+        >
           {t("nav.about")}
         </span>
-        <span onClick={() => handleNavClick("clients")} className="cursor-pointer">
+        <span
+          onClick={() => handleNavClick("clients")}
+          className="cursor-pointer"
+        >
           {t("nav.clients")}
         </span>
-        <span onClick={() => handleNavClick("projects")} className="cursor-pointer">
+        <span
+          onClick={() => handleNavClick("projects")}
+          className="cursor-pointer"
+        >
           {t("nav.projects")}
         </span>
-        <span onClick={() => handleNavClick("services")} className="cursor-pointer">
+        <span
+          onClick={() => handleNavClick("services")}
+          className="cursor-pointer"
+        >
           {t("nav.services")}
         </span>
-        <span onClick={() => handleNavClick("contact")} className="cursor-pointer">
+        <span
+          onClick={() => handleNavClick("contact")}
+          className="cursor-pointer"
+        >
           {t("nav.contact")}
         </span>
       </div>
 
+<div className="fixed bottom-4 flex justify-center md:hidden z-50">
+  <button
+    onClick={() => setMobileMenuOpen((prev) => !prev)}
+    className="bg-[#4E4E4E] text-white p-4 rounded-full shadow-lg transition-transform hover:scale-105"
+  >
+    {mobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
+  </button>
+</div>
+
+<div className="fixed bottom-0 left-0 right-0 h-14 md:hidden z-10 overflow-hidden">
+</div>
+
+<div className="fixed bottom-0 left-0 right-0 bg-[#4E4E4E] h-12 md:hidden z-10">
+</div>
+
+
       <div
-        className={`fixed bottom-0 left-0 right-0 md:hidden flex justify-around items-center py-3 rounded-t-lg text-white bg-[#4E4E4E] transform transition-all duration-500 ${
-          showMobileNav ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"
+        className={`fixed bottom-16 left-0 right-0 md:hidden flex justify-around items-center py-2 text-white transform transition-all duration-500 ${
+          mobileMenuOpen
+            ? "translate-y-0 opacity-100"
+            : "translate-y-full opacity-0"
         }`}
       >
-        <span onClick={() => handleNavClick("home")} className="flex flex-col items-center text-xs">
+        <span
+          onClick={() => handleNavClick("home")}
+          className="flex flex-col bg-[#4E4E4E] p-2 rounded-full items-center text-xs"
+        >
           <Home size={24} />
         </span>
-        <span onClick={() => handleNavClick("about")} className="flex flex-col items-center text-xs">
+        <span
+          onClick={() => handleNavClick("about")}
+          className="flex flex-col bg-[#4E4E4E] p-2 rounded-full items-center text-xs"
+        >
           <Info size={24} />
         </span>
-        <span onClick={() => handleNavClick("clients")} className="flex flex-col items-center text-xs">
+        <span
+          onClick={() => handleNavClick("clients")}
+          className="flex flex-col bg-[#4E4E4E] p-2 rounded-full items-center text-xs"
+        >
           <Users size={24} />
         </span>
-        <span onClick={() => handleNavClick("projects")} className="flex flex-col items-center text-xs">
+        <span
+          onClick={() => handleNavClick("projects")}
+          className="flex flex-col bg-[#4E4E4E] p-2 rounded-full items-center text-xs"
+        >
           <Briefcase size={24} />
         </span>
-        <span onClick={() => handleNavClick("services")} className="flex flex-col items-center text-xs">
+        <span
+          onClick={() => handleNavClick("services")}
+          className="flex flex-col bg-[#4E4E4E] p-2 rounded-full items-center text-xs"
+        >
           <Wrench size={24} />
         </span>
-        <span onClick={() => handleNavClick("contact")} className="flex flex-col items-center text-xs">
+        <span
+          onClick={() => handleNavClick("contact")}
+          className="flex flex-col bg-[#4E4E4E] p-2 rounded-full items-center text-xs"
+        >
           <Mail size={24} />
         </span>
       </div>
