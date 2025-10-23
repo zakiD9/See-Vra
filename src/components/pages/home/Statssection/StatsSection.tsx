@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 
 
 export default function Stats(){
-  const {t}= useTranslation();
+  const {t,i18n}= useTranslation();
 
   const { getStatisticById } = useStatisticStore()
   const [stats, setStats] = useState([
@@ -33,7 +33,7 @@ export default function Stats(){
     }
 
     fetchStats()
-  }, [getStatisticById, t])
+  }, [getStatisticById, i18n.language])
 
     return(
         <motion.div
