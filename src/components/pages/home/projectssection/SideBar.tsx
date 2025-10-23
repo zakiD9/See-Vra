@@ -12,7 +12,7 @@ type ProjectType = {
 interface SideBarProps {
   types: ProjectType[];
   isFooter: boolean;
-  onTypeChange: (id: number) => void;
+  onTypeChange?: (id: number) => void;
 }
 
 export default function SideBar({ types, isFooter, onTypeChange }: SideBarProps) {

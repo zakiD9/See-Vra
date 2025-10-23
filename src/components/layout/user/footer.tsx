@@ -60,7 +60,7 @@ function Footer() {
           </div>
 
           <div className="flex justify-center md:justify-start">
-            <SideBar isFooter={true} types={types} />
+            <SideBar  isFooter={true} types={types} />
           </div>
 
           <div className="flex flex-col gap-3">
