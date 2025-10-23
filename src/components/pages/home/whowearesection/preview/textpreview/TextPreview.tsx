@@ -1,5 +1,6 @@
 import Button from "@/components/ui/button";
 import { useTranslation } from "react-i18next";
+import img from "../../../../../../assets/4cdd11988b7916eff33b8cde34b11a5e0f40d936 (1).jpg"
 
 export default function TextPreview() {
   const{t}=useTranslation();
@@ -10,10 +11,10 @@ export default function TextPreview() {
 
       <div className="relative flex w-full  items-center gap-10 p-10">
         <img
-          src="https://picsum.photos/400/200"
+          src={img}
           loading="lazy"
           alt=""
-          className="object-cover hidden sm:block skew-y-3  rotate-2 w-64 h-32 md:w-80 md:h-40 rounded-2xl"
+          className="object-cover hidden sm:block skew-y-6 -rotate-1 w-64 h-32 md:w-80 md:h-52 rounded-3xl"
         />
         <div className="flex flex-col gap-5 items-center text-center sm:text-start sm:items-start sm:w-1/2 justify-start">
           <h1 className="md:text-2xl xm:text-lg font-semibold">{t("textPreview.title")}</h1>
