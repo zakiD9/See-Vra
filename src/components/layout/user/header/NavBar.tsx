@@ -98,15 +98,13 @@ function NavBar() {
   </button>
 </div>
 
-<div className="fixed bottom-0 left-0 right-0 h-14 md:hidden z-10 overflow-hidden">
-</div>
 
 <div className="fixed bottom-0 left-0 right-0 bg-[#4E4E4E] h-12 md:hidden z-10">
 </div>
 
 
       <div
-        className={`fixed bottom-16 left-0 right-0 md:hidden flex justify-around items-center py-2 text-white transform transition-all duration-500 ${
+        className={`fixed bottom-20 left-0 right-0 md:hidden flex justify-around items-center py-2 text-white transform transition-all duration-500 ${
           mobileMenuOpen
             ? "translate-y-0 opacity-100"
             : "translate-y-full opacity-0"
