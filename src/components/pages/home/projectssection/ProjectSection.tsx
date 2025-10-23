@@ -67,7 +67,7 @@ const handleTypeChange = (id: number) => {
                 />
               ))
             ) : (
-              <div className="text-center text-gray-500">No projects found.</div>
+              <div className="text-center flex justify-center items-center text-gray-500">No projects found.</div>
             )}
           </Suspense>
             </div>
