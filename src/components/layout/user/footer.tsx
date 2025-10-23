@@ -15,7 +15,6 @@ import {
 import SideBar from "../../pages/home/projectssection/SideBar";
 import { useTranslation } from "react-i18next";
 import React from "react";
-import LanguageSwitcher from "./header/LanguageDropdown";
 
 function Footer() {
   const { t } = useTranslation();
@@ -69,7 +68,6 @@ function Footer() {
             <p className="md:text-lg">info@see-vra.com</p>
           </div>
           <div className="flex justify-center md:hidden">
-          <LanguageSwitcher />
           </div>
         </div>
 

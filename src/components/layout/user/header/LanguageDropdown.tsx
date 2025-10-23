@@ -34,12 +34,13 @@ export default function LanguageSwitcher() {
           className="flex items-center gap-2"
         >
           <span className="lg:text-lg">{currentLang.flag}</span>
-          <span>{currentLang.label}</span>
+          <span className="md:block hidden">{currentLang.label}</span>
+          <span className=" md:hidden">{currentLang.code}</span>
           <ChevronDown size={16} />
         </Button>
       </DropdownMenuTrigger>
 
-      <DropdownMenuContent className="w-40">
+      <DropdownMenuContent className="">
         {languages.map((lang) => (
           <DropdownMenuItem
             key={lang.code}
@@ -49,7 +50,8 @@ export default function LanguageSwitcher() {
             }`}
           >
             <span className="text-lg">{lang.flag}</span>
-            <span>{lang.label}</span>
+            <span className="md:block hidden">{lang.label}</span>
+            <span className=" md:hidden">{lang.code}</span>
           </DropdownMenuItem>
         ))}
       </DropdownMenuContent>

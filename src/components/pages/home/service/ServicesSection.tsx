@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { motion } from "framer-motion";
+import { motion ,AnimatePresence } from "framer-motion";
 import ServiceCard from "./ServicesCard";
 import { useTranslation } from "react-i18next";
 import { services } from "@/data/services";
@@ -26,6 +26,7 @@ export default function ServicesSection() {
          {selectedService ? (
           <>
             <ServiceCard
+            isSelected={selectedService}
               key={selectedService.id}
               {...selectedService}
               onClick={() => setSelectedId(null)}
@@ -34,7 +35,7 @@ export default function ServicesSection() {
   ${selectedService ? "opacity-100 translate-x-0" : "opacity-0 translate-x-10"}
   `}>
             {selectedService.details.map((detail)=>(
-                <div className="flex items-center gap-3">
+                <div key={detail.id} className="flex items-center gap-3">
                 <img src={detail.logo} loading="lazy" alt="logo"  className="w-14 h-14"/>
               <p className="text-lg">{t(detail.name)}</p>
                 </div>
@@ -51,6 +52,40 @@ export default function ServicesSection() {
           ))
         )}
       </motion.div>
+
+      <AnimatePresence>
+        {selectedService && (
+          <motion.div
+            key="mobileDetails"
+            initial={{ x: "100%" }}
+            animate={{ x: 0 }}
+            exit={{ x: "100%" }}
+            transition={{ type: "spring", damping: 20, stiffness: 120 }}
+            className="fixed inset-y-0 right-0 bg-white text-black w-full sm:w-[80%] p-6 z-50 shadow-xl md:hidden flex flex-col gap-6"
+          >
+            <button
+              onClick={() => setSelectedId(null)}
+              className="self-end text-xl font-semibold"
+            >
+              ✕
+            </button>
+            <h2 className="text-2xl font-semibold text-[#1963B9]">{t(selectedService.title)}</h2>
+            <div className="flex flex-col gap-4 mt-4">
+              {selectedService.details.map((detail) => (
+                <div key={detail.id} className="flex items-center gap-3">
+                  <img
+                    src={detail.logo}
+                    loading="lazy"
+                    alt="logo"
+                    className="w-12 h-12"
+                  />
+                  <p className="text-base">{t(detail.name)}</p>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
