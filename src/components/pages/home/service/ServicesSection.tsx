@@ -69,7 +69,7 @@ export default function ServicesSection() {
             >
               ✕
             </button>
-            <h2 className="text-2xl font-semibold text-[#1963B9]">{t(selectedService.title)}</h2>
+            <h2 className="text-2xl font-semibold text-[#1963B9]">{t(selectedService.serviceName)}</h2>
             <div className="flex flex-col gap-4 mt-4">
               {selectedService.details.map((detail) => (
                 <div key={detail.id} className="flex items-center gap-3">
